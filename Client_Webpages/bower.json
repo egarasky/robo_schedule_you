@@ -1,0 +1,28 @@
+{
+  "name": "RoboScheduleYou",
+  "version": "0.0.0",
+  "homepage": "https://github.com/egarasky/node_employee_scheduler",
+  "authors": [
+    "Eric <egarasky@gmail.com>"
+  ],
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "angular": "~1.4.3",
+    "bootstrap": "~3.3.5",
+    "angular-route": "~1.4.3",
+    "angular-resource": "~1.4.3",
+    "angular-ui-router": "~0.2.15"
+  },
+  "devDependencies": {
+    "grunt-contrib-watch": "~0.6.1"
+  }
+}

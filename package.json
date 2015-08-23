@@ -1,0 +1,31 @@
+{
+  "name": "robo-schedule-you-front-end",
+  "version": "1.0.0",
+  "description": "A web application in node and jquery that automatically handles scheduling for managers and employees",
+  "main": "app.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eric Garasky",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-concurrent": "^2.0.2",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-nodemon": "^0.4.0",
+    "grunt-shell-spawn": "^0.3.8",
+    "load-grunt-tasks": "^3.2.0"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egarasky/node_employee_scheduler.git"
+  },
+  "bugs": {
+    "url": "https://github.com/egarasky/node_employee_scheduler/issues"
+  },
+  "homepage": "https://github.com/egarasky/node_employee_scheduler"
+}

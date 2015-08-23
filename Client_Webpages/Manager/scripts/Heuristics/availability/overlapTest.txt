@@ -1,0 +1,19 @@
+
+shift 0
+2,30 7,0
+avail index0
+0,0 23,59
+start boundary found0
+end boundary found0
+shift 1
+7,0 12,30
+avail index0
+0,0 23,59
+start boundary found0
+end boundary found0
+shift 2
+14,30 20,30
+avail index0
+0,0 23,59
+start boundary found0
+end boundary found0
