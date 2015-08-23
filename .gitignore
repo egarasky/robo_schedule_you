@@ -1,0 +1,14 @@
+# logs
+logs
+*.logs
+npm-debug.log*
+
+#grunt intermediate storage
+.grunt
+**/.grunt
+
+#dependencies
+node_modules
+**/node_modules
+bower_components
+**/bower_components
