@@ -1,0 +1,49 @@
+.shift-schedule{
+	display: inline-block;
+	vertical-align: top;
+	width: 70%;
+}
+
+.shift-control {
+	display: inline-block;
+	vertical-align: top;
+	width: 29%;
+}
+
+.shift-edit {
+	display: none;
+}
+
+.shift-buttons button {
+	width: 30%;
+}
+
+.shift-name label {
+	width: 25%;
+}
+
+.shift-roles label {
+	width: 25%;
+}
+
+.shift-name input {
+	width: 65%;
+}
+
+.shift-time label {
+	width: 35%;
+}
+
+.shift-control li>*{
+	margin-left: 4%;
+}
+
+.shift-control .role-name {
+	width: 30%;
+	display: inline-block;
+}
+
+
+
+
+

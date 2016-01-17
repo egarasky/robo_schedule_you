@@ -1,31 +1,51 @@
 {
-  "name": "robo-schedule-you-front-end",
-  "version": "1.0.0",
-  "description": "A web application in node and jquery that automatically handles scheduling for managers and employees",
-  "main": "app.js",
-  "directories": {
-    "test": "tests"
+  "name": "robo_schedule_you",
+  "version": "0.0.0",
+  "description": "MEAN scheduling application",
+  "main": "AppServer.js",
+  "dependencies": {
+    "async": "~0.9.2",
+    "bcrypt": "~0.8.5",
+    "bluebird": "^3.0.5",
+    "body-parser": "^1.14.2",
+    "express": "~4.13.3",
+    "express-session": "~1.11.3",
+    "grunt-contrib-clean": "^0.7.0",
+    "grunt-contrib-concat": "^0.5.1",
+    "moment": "^2.11.0",
+    "mongoose": "~3.6.20",
+    "mongoose-deep-populate": "~2.0.1",
+    "mongoose-moment": "^0.1.0",
+    "nodemon": "~1.4.1",
+    "supertest-session": "^2.0.0"
+  },
+  "devDependencies": {
+    "chai": "~3.2.0",
+    "grunt": "~0.4.5",
+    "grunt-concurrent": "~2.0.3",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-copy": "^0.8.2",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-mocha-hack": "~0.1.0",
+    "grunt-nodemon": "~0.4.0",
+    "grunt-shell-spawn": "~0.3.8",
+    "grunt-simple-mocha": "~0.4.0",
+    "load-grunt-tasks": "~3.2.0",
+    "mocha": "^2.3.4",
+    "nodeunit": "~0.9.1",
+    "supertest": "^1.1.0",
+    "supertest-session-promise": "^2.0.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Eric Garasky",
-  "license": "MIT",
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-concurrent": "^2.0.2",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-nodemon": "^0.4.0",
-    "grunt-shell-spawn": "^0.3.8",
-    "load-grunt-tasks": "^3.2.0"
-  },
-  "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/egarasky/node_employee_scheduler.git"
+    "url": "https://github.com/egarasky/robo_schedule_you"
   },
+  "author": "Eric Garasky",
+  "license": "BSD-2-Clause",
   "bugs": {
-    "url": "https://github.com/egarasky/node_employee_scheduler/issues"
-  },
-  "homepage": "https://github.com/egarasky/node_employee_scheduler"
+    "url": "https://github.com/egarasky/robo_schedule_you/issues"
+  }
 }

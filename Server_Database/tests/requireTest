@@ -1,2 +1,0 @@
-var requireTest = require('./mapTests.js');
-console.log(requireTest);

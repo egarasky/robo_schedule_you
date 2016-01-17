@@ -1,0 +1,39 @@
+p {
+	padding: 10px 0;
+}
+
+.roles ul a{ 
+	color: black;
+	text-decoration: none;
+}
+
+.view {
+	position: relative;
+
+}
+
+.roles {
+	display: inline-block;
+	margin-right: 15%;
+	height: 70vh;
+	overflow: hidden;
+
+}
+
+.roles-list {
+	overflow-y: auto;
+	overflow-x: hidden;
+	height: 100%;
+}
+
+.role-control {
+	display: inline-block;
+	position: absolute;
+	top: 0;
+}
+
+
+
+#edit-role-input {
+	margin-right: 5px;
+}

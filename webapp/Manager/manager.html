@@ -1,0 +1,47 @@
+<nav>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#manager-navbar" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <!-- toggling content -->
+        <div class="collapse navbar-collapse" id="manager-navbar">
+            <ul class="nav navbar-nav">
+                <li><a class="navbar-brand" ui-sref="manager.home">Home</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" aria-haspopup="true" role="button" data-toggle="dropdown" href=""
+                       aria-expanded="false">Employees</a>
+                    <ul class="dropdown-menu">
+                        <li><a ui-sref="manager.addEmployee" href="">Create</a></li>
+                        <li><a ui-sref="manager.editEmployee">Edit</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" aria-haspopup="true" role="button" data-toggle="dropdown" href=""
+                       aria-expanded="false">Business Info</a>
+                    <ul class="dropdown-menu">
+                        <li><a ui-sref="manager.shifts">Shifts</a></li>
+                        <li><a ui-sref="manager.hours">Hours</a></li>
+                        <li><a ui-sref="manager.roles">Roles</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" aria-haspopup="true" role="button" data-toggle="dropdown" href=""
+                       aria-expanded="false">Schedule</a>
+                    <ul class="dropdown-menu">
+                        <li><a ui-sref="manager.createSchedule">Create</a></li>
+                        <li><a ui-sref="manager.editSchedule">Edit</a></li>
+                        <li><a ui-sref="manager.pastSchedule">View Past</a></li>
+                    </ul>
+                </li>
+                <li><a href="" class="logout">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div ui-view class='manager-view'></div>

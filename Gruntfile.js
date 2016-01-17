@@ -1,23 +1,28 @@
-module.exports = function(grunt){
+module.exports = function (grunt) {
     grunt.initConfig({
+        clean: {
+            test: ['test/*.js']
+        },
         concurrent: {
             target: ['nodemon', 'watch'],
             options: {
                 logConcurrentOutput: true
             }
         },
-        'shell': {
-            mongo: {
-                command: 'mongod',
-                options: {
-                    async: true,
-                }
+        concat: {
+            test: {
+                src: ['testApp.js', '**/test/*.js', '!test/**', '!node_modules/**', '!**/*stub.js'],
+                dest: 'test/test.js'
+            },
+            options: {
+                separator: '\n',
+                sourceMap: true
             }
         },
         watch: {
-            files: ['!Client_Webpages/bower_components/**'],
+            files: ['!webapp/bower_components/**'],
             styles: {
-                files: 'Client_Webpages/**/*.css',
+                files: 'webapp/**/*.css',
                 tasks: [],
                 options: {
                     spawn: false,
@@ -25,7 +30,7 @@ module.exports = function(grunt){
                 }
             },
             scripts: {
-                files: 'Client_Webpages/**/*.js',
+                files: 'webapp/**/*.js',
                 tasks: [],
                 options: {
                     spawn: false,
@@ -33,7 +38,7 @@ module.exports = function(grunt){
                 }
             },
             pages: {
-                files: 'Client_Webpages/**/*.html',
+                files: 'webapp/**/*.html',
                 tasks: [],
                 options: {
                     spawn: false,
@@ -45,52 +50,85 @@ module.exports = function(grunt){
                 options: {
                     livereload: true
                 }
+            },
+            test: {
+                files: ['**/test/*.js', '!test/**'],
+                tasks: ['copy:test']
             }
         },
         nodemon: {//https://github.com/ChrisWren/grunt-nodemon
             dev: {
-                script: 'Server_Database/Servers/AppServer.js',
-                cwd: 'Server_Database/**',
-                ignore: ['node_modules/**', 'Server_Database/node_modules/**'],
-                callback: function(nodemon){
-                    nodemon.on('log', function(event){
+                script: 'AppServer.js',
+                cwd: './',
+                ignore: ['node_modules/**', 'webapp/**'],
+                callback: function (nodemon) {
+                    nodemon.on('log', function (event) {
                         console.log(event.color);
                     });
 
-                    nodemon.on('config:update', function() {
+                    nodemon.on('config:update', function () {
                         setTimout(function () {
                             require('open')('http://localhost:3000');
                         }, 500);
                     });
 
-                    nodemon.on('restart', function(){
-                        setTimeout(function(){
+                    nodemon.on('restart', function () {
+                        setTimeout(function () {
                             require('fs').writeFileSync('.rebooted', 'rebooted');
                         }, 500);
                     });
                 }
             }
+        },
+        'mocha-hack': {
+            options: {
+                globals: ['expect', 'projectPath'],
+                timeout: 1500,
+                ignoreLeaks: false,
+                ui: 'bdd',
+                reporter: 'tap'
+            },
+            all: {src: ['**/test/*.js', '!node_modules/**', '!webapp/**', '!test/**']}
         }
     });
 
-    grunt.registerTask('mongo', function(){
-        grunt.util.spawn({
-            cmd: 'start-process mongod'
-        }, function(error, result, code){
-            var done = this.sync();
-            if(error){
-                grunt.fail.fatal(error, code);
-            } else {
-                grunt.log.writeln("mongodb started");
-            }
-        })
+    //grunt.registerTask('mongo', function(){
+    //    grunt.util.spawn({
+    //        cmd: 'start-process mongod'
+    //    }, function(error, result, code){
+    //        var done = this.sync();
+    //        if(error){
+    //            grunt.fail.fatal(error, code);
+    //        } else {
+    //            grunt.log.writeln("mongodb started");
+    //        }
+    //    })
+    //});
+
+    grunt.registerTask('set-test-globals', function () {
+        global['projectPath'] = function (path) {
+            return __dirname + path;
+        };
+
     });
+
 
     grunt.loadNpmTasks('grunt-shell-spawn');
     grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-nodemon');
+    grunt.loadNpmTasks('grunt-mocha-hack');
+    grunt.loadNpmTasks('grunt-execute');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
+    grunt.registerTask('default-test', ['concat:test', 'set-test-globals']);
 
-    grunt.registerTask('default', ['concurrent:target']);
+    grunt.registerTask('default', ['set-test-globals', 'concurrent:target']);
+    //grunt.registerTask('test', ['set-test-globals', 'mocha-hack']); old way with running mocha through grunt
+    //new way uses mocha.opts file, grunt just watches and copies changed test files to the default mocha /test directory
+    //and then run grunt tests through webstorm
+    grunt.registerTask('test', ['clean:test', 'concat:test', 'watch:test']);
+    grunt.registerTask('debug', ['set-test-globals', 'nodemon']);
 };
