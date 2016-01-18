@@ -6,11 +6,23 @@ var TemplateScheduleSchema = new mongoose.Schema({
     days: [Day]
 });
 
+TemplateScheduleSchema.methods.toJSON = function(){
+    return {
+        name: this.name,
+        days: this.days.map(function(day){return day.toJSON()}),
+        _id: this._id.toString()
+    }
+};
 
 function TemplateSchedulePlugin(schema, options) {
     schema.add({templateSchedules: [TemplateScheduleSchema]});
     schema.statics.addTemplateSchedule = addTemplateSchedule;
     schema.statics.updateTemplateSchedule = updateTemplateSchedule;
+    schema.statics.getTemplateSchedules = getTemplateSchedules;
+}
+
+function getTemplateSchedules(userId){
+
 }
 
 function addTemplateSchedule(managerId, schedule) {
