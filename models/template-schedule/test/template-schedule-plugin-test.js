@@ -1,25 +1,22 @@
-describe.only('template-schedule-plugin', function () {
+describe('template-schedule-plugin', function () {
+//TODO(EG) stub data just copied from role-plugin-test, eventually consolidate
     var mongoose = require('mongoose');
-    var moment = require('moment');
-    //TODO(EG) stub data just copied from role-plugin-test, eventually consolidate
     var testManagerSchema = mongoose.Schema({});
-    testManagerSchema.plugin(require(projectPath('/models/user/user-plugin')));
-    testManagerSchema.plugin(require(projectPath('/models/manager/plugins/role-plugin')));
-    testManagerSchema.plugin(require(projectPath('/models/schedule/template-schedule-plugin')));
-    var TestManager = mongoose.model('TemplateScheduleTestManager', testManagerSchema);
-    const ROLE_1_NAME = 'cook', ROLE_1_HOW_MANY = 3;
+
+    const ROLE_1_NAME = 'cook', ROLE_1_HOW_MANY = 3, ROLE_1_ID = new mongoose.Types.ObjectId();
     const ROLE_1 = {
-        roleName: ROLE_1_NAME,
-        howManyNeeded: ROLE_1_HOW_MANY
+        _id: ROLE_1_ID,
+        roleName: ROLE_1_NAME
     };
-    const ROLE_2_NAME = 'waiter', ROLE_2_HOW_MANY = 5;
+    const ROLE_2_NAME = 'waiter', ROLE_2_HOW_MANY = 5, ROLE_2_ID = new mongoose.Types.ObjectId();
     const ROLE_2 = {
-        roleName: ROLE_2_NAME,
-        howManyNeeded: ROLE_2_HOW_MANY
+        _id: ROLE_2_ID,
+        roleName: ROLE_2_NAME
     };
-    var userId;
-    var templateScheduleId;
+    const USER_ID = new mongoose.Types.ObjectId();
+    const TEMPLATE_SCHEDULE_ID = new mongoose.Types.ObjectId();
     var USER_DATA = {
+        _id: USER_ID,
         firstName: 'Bob',
         lastName: 'Belcher',
         userName: 'BurgerBoss',
@@ -27,12 +24,44 @@ describe.only('template-schedule-plugin', function () {
         roles: [ROLE_1, ROLE_2]
     };
 
+    var SCHEDULE_STUB_BLANK_SHIFTS = {
+        _id: TEMPLATE_SCHEDULE_ID,
+        name: 'regular',
+        days: [{
+            startTime: [7, 0],
+            endTime: [17, 0],
+            shifts: [{
+                roles: [],
+                name: 'breakfast',
+                startTime: [7, 0],
+                endTime: [12, 30]
+            }, {
+                roles: [],
+                name: 'lunch',
+                startTime: [12, 30],
+                endTime: [17, 0]
+            }]
+        }, {
+            startTime: [7, 0],
+            endTime: [17, 0],
+            shifts: [{
+                roles: [],
+                name: 'all day',
+                startTime: [7, 0],
+                endTime: [17, 0]
+            }]
+        }] //might not initialize correctly if empty
+    };
+
+    testManagerSchema.plugin(require(projectPath('/models/user/user-plugin')));
+    testManagerSchema.plugin(require(projectPath('/models/manager/plugins/role-plugin')));
+    testManagerSchema.plugin(require(projectPath('/models/template-schedule/template-schedule-plugin')));
+    var TestManager = mongoose.model('TemplateScheduleTestManager', testManagerSchema);
+
     beforeEach(function (done) {
-        templateScheduleId = null;
         TestManager.remove({}, function () {
             var testManager = new TestManager(USER_DATA);
             testManager.save(function (err, user) {
-                userId = user._id;
                 done();
             });
         });
@@ -47,17 +76,20 @@ describe.only('template-schedule-plugin', function () {
 
     it('should create a blank template schedule', function () {
         var schedule = {
+            _id: TEMPLATE_SCHEDULE_ID,
+            name: 'breakfast',
             days: []
         };
-        return TestManager.addTemplateSchedule(userId, schedule)
+        return TestManager.addTemplateSchedule(USER_ID, schedule)
             .then(function (generatedId) {
-                templateScheduleId = generatedId;
-                return TestManager.getTemplateSchedules(userId);
+                expect(generatedId.equals(TEMPLATE_SCHEDULE_ID));
+                return TestManager.getTemplateSchedules(USER_ID);
             })
             .then(function (templateSchedules) {
                 expect(templateSchedules.length).to.equal(1);
-                expect(templatesSchedules.id(templateScheduleId)).to.deep.equal({
-                    _id: templateScheduleId,
+                expect(templateSchedules[0]).to.deep.equal({
+                    _id: TEMPLATE_SCHEDULE_ID.toString(),
+                    name: 'breakfast',
                     days: []
                 });
             });
@@ -65,126 +97,226 @@ describe.only('template-schedule-plugin', function () {
 
     it('should create a template schedule with two days', function () {
         var schedule = {
-            days: [{}, {}]
+            _id: TEMPLATE_SCHEDULE_ID,
+            name: 'breakfast',
+            days: [
+                {
+                    startTime: [4, 30],
+                    endTime: [7, 30],
+                    shifts: []
+                },
+                {
+                    startTime: [8, 0],
+                    endTime: [20, 10],
+                    shifts: []
+                }]
         };
-        return TestManager.addTemplateSchedule(userId, schedule)
+        return TestManager.addTemplateSchedule(USER_ID, schedule)
             .then(function (generatedId) {
-                templateScheduleId = generatedId;
-                return TestManager.getTemplateSchedules(userId);
+                expect(generatedId.equals(TEMPLATE_SCHEDULE_ID));
+                return TestManager.getTemplateSchedules(USER_ID);
             })
             .then(function (templateSchedules) {
                 expect(templateSchedules.length).to.equal(1);
-                expect(templateSchedules.id(templateScheduleId).to.deep.equal({//delete Obj Ids
-
-                }));
+                templateSchedules[0].days.forEach(function (day) {
+                    expect(day._id instanceof mongoose.Types.ObjectId);
+                });
+                expect(deleteObjIds(templateSchedules[0])).to.deep.equal(deleteObjIds(schedule));
             });
     });
 
     it('should add a blank day to a work schedule', function () {
         var schedule = {
+            _id: TEMPLATE_SCHEDULE_ID,
+            name: 'breakfast',
             days: []
         };
-        return TestManager.addTemplateSchedule(userId, schedule)
-            .then(function (generatedId) {
-                templateScheduleId = generatedId;
-                schedule.days.push({});
-                return TestManager.updateTemplateSchedule(userId, templateScheduleId, schedule);
+        return TestManager.addTemplateSchedule(USER_ID, schedule)
+            .then(function () {
+                schedule.days.push({
+                    startTime: [4, 30],
+                    endTime: [7, 30],
+                    shifts: []
+                });
+                return TestManager.updateTemplateSchedule(USER_ID, TEMPLATE_SCHEDULE_ID, schedule);
             }).then(function () {
-                return TestManager.getTemplateSchedules(userId);
+                return TestManager.getTemplateSchedules(USER_ID);
             }).then(function (templateSchedules) {
-                var templateSchedule = templateSchedules.id(templateScheduleId);
-                expect(templateSchedule.days.length).to.be(1);
-                expect(deleteObjIds(templateScheduel.days[0])).to.deep.equal();
-                expect(deleteObjIds(templateSchedule)).to.deep.equal(schedule);
+                var templateSchedule = templateSchedules[0];
+                expect(templateSchedule.days.length).to.equal(1);
+                expect(deleteObjIds(templateSchedule)).to.deep.equal(deleteObjIds(schedule));
             });
     });
 
     it('should add a day with two shifts to a work schedule', function () {
         var schedule = {
-            days: [{}, {}]
+            name: 'breakfast',
+            days: [{
+                startTime: [4, 30],
+                endTime: [17, 30],
+                shifts: [{
+                    name: 'open',
+                    roles: [],
+                    startTime: [4, 30],
+                    endTime: [9, 0]
+                }, {
+                    name: 'breakfast',
+                    roles: [],
+                    startTime: [9, 0],
+                    endTime: [17, 30]
+                }]
+            }]
         };
-        return TestManager.addTemplateSchedule(userId, schedule)
+        return TestManager.addTemplateSchedule(USER_ID, schedule)
             .then(function (generatedId) {
-                templateScheduleId = generatedId;
-                return TestManager.getTemplateSchedules(userId);
+                return TestManager.getTemplateSchedules(USER_ID);
             })
             .then(function (templateSchedules) {
-                expect(deleteObjIds(templateSchedules.id(templateScheduleId)))
-                    .to.deep.equal(schedule);
+                expect(deleteObjIds(templateSchedules[0])).to.deep.equal(schedule);
             });
     });
 
-    it('should update a template schedule by adding a shift to its first day and one shift having a day', function () {
+    it('should update a template schedule by adding a shift to its first day', function () {
         var shift = {
-            startTime: moment('2016-01-01T07:00Z'),
-            endTime: moment('2016-01-01T09:00Z')
+            name: 'breakfast',
+            startTime: [6, 30],
+            endTime: [12, 30],
+            roles: []
         };
         var schedule = {
+            _id: TEMPLATE_SCHEDULE_ID,
+            name: 'regular',
             days: [{
+                startTime: [6, 30],
+                endTime: [17, 30],
                 shifts: []
-            }, {}]
+            }, {
+                startTime: [8, 0],
+                endTime: [16, 30],
+                shifts: []
+            }]
         };
-        var day1Id, day2Id;
-        expect.fail("not implemented");
-        return TestManager.addTemplateSchedule(userId, schedule)
-            .then(function (generatedId) {
-                templateScheduleId = generatedId;
-                return TestManager.getTemplateSchedules(userId);
+        return TestManager.addTemplateSchedule(USER_ID, schedule)
+            .then(function () {
+                return TestManager.getTemplateSchedules(USER_ID);
             })
             .then(function (templateSchedules) {
-                var templateSchedule = templateSchedules.id(templateScheduleId);
+                var templateSchedule = templateSchedules[0];
+                expect(deleteObjIds(templateSchedule)).to.deep.equal(deleteObjIds(schedule));
                 day1Id = templateSchedule.days[0]._id;
                 day2Id = templateSchedule.days[1]._id;
-                templateSchedule.days[0].shifts.push({});
-                return TestManager.updateTemplateSchedule(userId, scheduleId, schedule);
+                templateSchedule.days[0].shifts.push(shift);
+                schedule.days[0].shifts.push(shift);
+                return TestManager.updateTemplateSchedule(USER_ID, TEMPLATE_SCHEDULE_ID, schedule);
             })
             .then(function () {
-                return TestManager.getTemplateSchedules(userId);
+                return TestManager.getTemplateSchedules(USER_ID);
             })
-            .then(function(templateSchedules){
-                var templateSchedule = templateSchedules.id(templateScheduleId);
+            .then(function (templateSchedules) {
+                var templateSchedule = templateSchedules[0];
+                expect(deleteObjIds(templateSchedule)).to.deep.equal(deleteObjIds(schedule));
             });
     });
 
     it('should delete a shift from a template schedule', function () {
-        var scheduleStub = {
-            days: [{
-                shifts: [{}]
-            }, {
-                shifts: [{}, {}]
-            }] //might not initialize correctly if empty
-        };
-        return TestManager.addTemplateSchedule(userId, scheduleStub)
-            .then(function (generatedId) {
-                templateScheduleId = generatedId;
-                TestManager.getTemplateSchedules(userId);
+
+        return TestManager.addTemplateSchedule(USER_ID, SCHEDULE_STUB_BLANK_SHIFTS)
+            .then(function () {
+                return TestManager.getTemplateSchedules(USER_ID);
             }).then(function (templateSchedules) {
-                var templateSchedule = templateSchedules.id(templateScheduleId);
+                var templateSchedule = templateSchedules[0];
                 expect(templateSchedule.days.length).to.equal(2);
-                expect(templateSchedule.days[0].shifts.length).to.equal(1);//TODO(EG)preserved order should be separate test
-                expect(templateSchedule.days[1].shifts.length).to.equal(2);
-                scheduleStub.days[0].shifts.splice(0, 1);
-                return TestManager.updateTemplateSchedule(userId, templateScheduleId, scheduleStub);
+                expect(templateSchedule.days[0].shifts.length).to.equal(2);//TODO(EG)preserved order should be separate test
+                expect(templateSchedule.days[1].shifts.length).to.equal(1);
+                SCHEDULE_STUB_BLANK_SHIFTS.days[0].shifts.splice(0, 1);
+                templateSchedule.days[0].shifts.splice(0, 1);
+                return TestManager.updateTemplateSchedule(USER_ID, TEMPLATE_SCHEDULE_ID, SCHEDULE_STUB_BLANK_SHIFTS);
             })
             .then(function () {
-                return TestManager.getTemplateSchedules(userId);
+                return TestManager.getTemplateSchedules(USER_ID);
             })
             .then(function (templateSchedules) {
-                var templateSchedule = templateSchedules.id(templateScheduleId);
-                expect(deleteObjIds(templateSchedule)).to.deep.equal(scheduleStub);
+                var templateSchedule = templateSchedules[0];
+                expect(deleteObjIds(templateSchedule)).to.deep.equal(deleteObjIds(SCHEDULE_STUB_BLANK_SHIFTS));
             });
     });
 
     it('should add a template Schedule that has a shift and a role', function () {
-        schedule
-        expect.fail("not implemented");
+        var role1 = {
+            _id: ROLE_1_ID,
+            howManyNeeded: ROLE_1_HOW_MANY,
+            roleName: ROLE_1_NAME
+        };
+        var scheduleStub = {
+            name: 'regular',
+            days: [{
+                startTime: [6, 30],
+                endTime: [17, 30],
+                shifts: [{
+                    startTime: [6, 30],
+                    endTime: [11, 0],
+                    name: 'breakfast',
+                    roles: [ROLE_1]
+                }]
+            }, {
+                startTime: [7, 30],
+                endTime: [15, 30],
+                shifts: []
+            }]
+        };
+        scheduleStub.days[0].shifts[0].roles[0].howManyNeeded = 4;
+        return TestManager.addTemplateSchedule(USER_ID, scheduleStub)
+            .then(function () {
+                return TestManager.getTemplateSchedules(USER_ID);
+            })
+            .then(function (templateSchedules) {
+                var templateSchedule = templateSchedules[0];
+                expect(deleteObjIds(templateSchedule)).to.deep.equal(deleteObjIds(scheduleStub));
+            });
     });
 
-    it('should add delete a role from a scheduled shift', function () {
-        expect.fail("not implemented");
-    });
+    //TODO(EG) implement more
+    //it('should update a schedule by deleting one role and updating the other on a shift', function () {
+    //    expect.fail"not implemented");
+    //});
 
-    it('should update a role on a scheduled shift', function () {
-        expect.fail("not implemented");
-    });
+
+    it.only('should try to add a role to shift that doesn\'t exist as a general role', function () {
+        var clownRole = {
+            _id: new mongoose.Types.ObjectId(),
+            roleName: 'Clown',
+            howManyNeeded: 4
+        };
+        var roleDiffers = {
+            _id: ROLE_1_ID,
+            roleName: ROLE_2_NAME,
+            howManyNeeded: 3
+        };
+
+        var invalidRoles = [
+            {
+                role: ROLE_2,
+                reason: 'missing _id property',
+                invalidProperties: ['_id']
+            }
+        ];
+        TestManager.addTemplateSchedule(USER_ID, SCHEDULE_STUB_BLANK_SHIFTS)
+            .then(function () {
+                return TestManager.getTemplateSchedules(USER_ID);
+            })
+            .then(function (templateSchedules) {
+                var templateSchedule = templateSchedules[0];
+                //templateSchedule.days[0].shifts[0].roles.push(, , ROLE_2);
+                return TestManager.updateTemplateSchedule(USER_ID, SCHEDULE_STUB_BLANK_SHIFTS, templateSchedule);
+            })
+            .catch(function(errObj){
+                expect(errObj).message('Invalid roles on shift'); //more specific error message
+                expect(Object.keys(errObj).length).to.equal(1);
+                expect(errObj.missingProperty.length).to.equal({
+                    role: ROLE_2,
+                    missing: ['_id']
+                });
+                expect(errObj.invalidRole)
+            });
+    })
 });

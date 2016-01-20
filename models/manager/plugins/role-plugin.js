@@ -4,7 +4,7 @@ var noDuplicates = require(projectPath('/models/utility-hooks/check-for-duplicat
 
 var RoleSchema = new mongoose.Schema({
     roleName: {type: String, required: true},
-    howManyNeeded: {type: Number, required: true}
+    howManyNeeded: {type: Number}
 });//TODO more custom validation see schema docs and think of requirements
 RoleSchema.methods.toJSON = function () {
     return {
@@ -19,35 +19,35 @@ RoleSchema.methods.toJSON = function () {
  * @param next
  * @throws Error with object keys of role names that have duplicates with values being an array of the duplicate role names
  */
-function noDuplicateRoles(next) {
-    var seenRoles = {};
-    var duplicateRoles = {};
-    this.roles.forEach(function (role) {
-        if (seenRoles[role.roleName]) {
-            if (duplicateRoles[role.roleName]) {//if already defined then there are multiple duplicates
-                duplicateRoles[role.roleName].push(role);
-            } else {
-                duplicateRoles[role.roleName] = [role.roleName, seenRoles[role.roleName]];
-            }
-        } else {
-            seenRoles[role.roleName] = role;
-        }
-    });
-    if (Object.keys(duplicateRoles).length > 0) {
-        var error = new Error('Duplicate role names');
-        error.roles = [];
-        Object.keys(duplicateRoles).forEach(function (roleName) {
-            error.roles.push(roleName);
-        });
-        next(error);
-    } else {
-        next();
-    }
-}
+//function noDuplicateRoles(next) {
+//    var seenRoles = {};
+//    var duplicateRoles = {};
+//    this.roles.forEach(function (role) {
+//        if (seenRoles[role.roleName]) {
+//            if (duplicateRoles[role.roleName]) {//if already defined then there are multiple duplicates
+//                duplicateRoles[role.roleName].push(role);
+//            } else {
+//                duplicateRoles[role.roleName] = [role.roleName, seenRoles[role.roleName]];
+//            }
+//        } else {
+//            seenRoles[role.roleName] = role;
+//        }
+//    });
+//    if (Object.keys(duplicateRoles).length > 0) {
+//        var error = new Error('Duplicate role names');
+//        error.roles = [];
+//        Object.keys(duplicateRoles).forEach(function (roleName) {
+//            error.roles.push(roleName);
+//        });
+//        next(error);
+//    } else {
+//        next();
+//    }
+//}
 
 function RolesPlugin(schema, options) {
     schema.add({roles: [RoleSchema]});
-    schema.pre('save', noDuplicateRoles);
+    schema.pre('save', noDuplicates('roles', 'roleName'));
     schema.statics.addRole = addRole;
     schema.statics.deleteRole = deleteRole;
     schema.statics.updateRole = updateRole;
@@ -65,11 +65,11 @@ function addRole(managerId, roleName, howManyNeeded) {
                 reject({message: 'No user is found from provider userId'});//TODO pattern for rejecting promises
             } else if (!manager.roles) {
                 reject({message: 'No roles container found for user'});
-            } else {
-                var violates = violatesRoleIntegrity(manager.roles, roleName, howManyNeeded);
-                if (violates) {
-                    reject(violates);
-                }
+            } else { //TODO(EG) implement to make sure roleName isn't already defined?
+                //var violates = violatesRoleIntegrity(manager.roles, roleName, howManyNeeded);
+                //if (violates) {
+                //    reject(violates);
+                //}
             }
 
             var roleId = new mongoose.Types.ObjectId();
@@ -155,6 +155,6 @@ function getRoles(managerId) {
         });
     })
 }
-
+RolesPlugin.prototype.Schema = RoleSchema;
 module.exports = RolesPlugin;
 //TODO add validation/middleware like with user and password before save

@@ -4,9 +4,13 @@
  * and passes an error to the given callback if a propertyName value is seen more than once
  */
 function getNoDuplicatesFn(documentArrayName, propertyName){
-    return function noDuplicateRoles(next) {
+    return function noDuplicates(next) {
         var seenProperties = {};
         var duplicateProperties = {};
+        if(!this[documentArrayName]){
+            next();
+            return;
+        }
         this[documentArrayName].forEach(function (doc) {
             if (seenProperties[doc[propertyName]]) {
                 if (duplicateProperties[doc[propertyName]]) {//if already defined then there are multiple duplicates

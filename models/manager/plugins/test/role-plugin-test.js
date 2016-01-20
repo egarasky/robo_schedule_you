@@ -1,4 +1,6 @@
 describe('role-plugin', function () {
+    //TODO(EG) fix tests: howManyNeeded should be undefined for general roles of the organization
+    //TODO(EG) need to test adding role to template-shift and work shift
     var mongoose = require('mongoose');
     var testManagerSchema = mongoose.Schema({});
     testManagerSchema.plugin(require(projectPath('/models/user/user-plugin')));
@@ -107,9 +109,9 @@ describe('role-plugin', function () {
             }).then(function () {
                 expect.fail('should reject adding role due to unique name requirement');
             }).catch(function (errObj) {
-                expect(errObj.message).to.equal('Duplicate role names');
+                expect(errObj.message).to.equal('Duplicate roleName');
                 expect(Object.keys(errObj).length).to.equal(1);
-                expect(errObj.roles).to.contain(ROLE_1_NAME);
+                expect(errObj[ROLE_1_NAME].length).to.equal(2);//TODO(EG) specify what behavior cooks object should be
             });
     });
 
@@ -131,9 +133,9 @@ describe('role-plugin', function () {
                 expect.fail('should reject updating role due to unique name requirement');
             })
             .catch(function (errObj) {
-                expect(errObj.message).to.equal('Duplicate role names');
+                expect(errObj.message).to.equal('Duplicate roleName');
                 expect(Object.keys(errObj).length).to.equal(1);
-                expect(errObj.roles).to.contain(ROLE_2_NAME);
+                expect(errObj[ROLE_2_NAME].length).to.equal(2);
             });
     })
 

@@ -1,8 +1,8 @@
 //puts 
 var mongoose = require('mongoose');
 var Employee = require('../models/employee/employee-model.js');
-var Day = require('../models/day-schema.js');
-var Shift = require('../models/shift-schema.js');
+var Day = require('../models/template-day-schema.js');
+var Shift = require('../models/template-shift-schema.js');
 var sleep = require('sleep');
 
 

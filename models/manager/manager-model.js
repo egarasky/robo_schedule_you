@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Employee = require('./../employee/employee-model.js');
-var TemplateSchedule = require('./../schedule/template-schedule-plugin');
+var TemplateSchedule = require('./../template-schedule/template-schedule-plugin');
 var Role = require('./plugins/role-plugin');
 var bcrypt = require('bcrypt');
 var UserPlugin = require(projectPath('/models/user/user-plugin'));

@@ -1,5 +1,5 @@
 var User = require(projectPath('/models/manager/manager-model.js'));
-var templateSchedule = require(projectPath('/models/schedule/template-schedule-plugin'));
+var templateSchedule = require(projectPath('/models/template-schedule/template-schedule-plugin'));
 var ScheduleController = {};
 
 String.prototype.toObjectId = function () {
