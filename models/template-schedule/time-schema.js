@@ -1,1 +1,0 @@
-module.exports = [{type: Number, min: 0, max: 23, required: true}, {type: Number, min: 0, max: 59, required: true}];

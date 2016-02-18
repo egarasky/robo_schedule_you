@@ -1,6 +1,7 @@
 describe('template-schedule-plugin', function () {
 //TODO(EG) stub data just copied from role-plugin-test, eventually consolidate
     var mongoose = require('mongoose');
+    var _ = require('underscore');
     var testManagerSchema = mongoose.Schema({});
 
     const ROLE_1_NAME = 'cook', ROLE_1_HOW_MANY = 3, ROLE_1_ID = new mongoose.Types.ObjectId();
@@ -74,6 +75,7 @@ describe('template-schedule-plugin', function () {
         });
     });
 
+
     it('should create a blank template schedule', function () {
         var schedule = {
             _id: TEMPLATE_SCHEDULE_ID,
@@ -94,6 +96,8 @@ describe('template-schedule-plugin', function () {
                 });
             });
     });
+
+
 
     it('should create a template schedule with two days', function () {
         var schedule = {
@@ -147,6 +151,8 @@ describe('template-schedule-plugin', function () {
                 expect(deleteObjIds(templateSchedule)).to.deep.equal(deleteObjIds(schedule));
             });
     });
+
+
 
     it('should add a day with two shifts to a work schedule', function () {
         var schedule = {
@@ -241,6 +247,8 @@ describe('template-schedule-plugin', function () {
             });
     });
 
+
+
     it('should add a template Schedule that has a shift and a role', function () {
         var role1 = {
             _id: ROLE_1_ID,
@@ -256,7 +264,7 @@ describe('template-schedule-plugin', function () {
                     startTime: [6, 30],
                     endTime: [11, 0],
                     name: 'breakfast',
-                    roles: [ROLE_1]
+                    roles: [_.extendOwn({}, ROLE_1)]
                 }]
             }, {
                 startTime: [7, 30],
@@ -275,13 +283,7 @@ describe('template-schedule-plugin', function () {
             });
     });
 
-    //TODO(EG) implement more
-    //it('should update a schedule by deleting one role and updating the other on a shift', function () {
-    //    expect.fail"not implemented");
-    //});
-
-
-    it.only('should try to add a role to shift that doesn\'t exist as a general role', function () {
+    it('should try to add a role to shift that doesn\'t exist as a general role', function () {
         var clownRole = {
             _id: new mongoose.Types.ObjectId(),
             roleName: 'Clown',
@@ -292,31 +294,51 @@ describe('template-schedule-plugin', function () {
             roleName: ROLE_2_NAME,
             howManyNeeded: 3
         };
-
+        var missingId = _.extendOwn({}, ROLE_2);
+        delete missingId._id;
         var invalidRoles = [
             {
-                role: ROLE_2,
-                reason: 'missing _id property',
+                role: roleDiffers,
+                reason: 'Organization role corresponding to _id differs from scheduled role'
+            },
+            {
+
+                role: clownRole,
+                reason: '_id does not match organization role'
+
+            },
+            {
+                role: missingId,
+                reason: 'Missing _id property',
                 invalidProperties: ['_id']
             }
+
         ];
-        TestManager.addTemplateSchedule(USER_ID, SCHEDULE_STUB_BLANK_SHIFTS)
+        return TestManager.addTemplateSchedule(USER_ID, SCHEDULE_STUB_BLANK_SHIFTS)
             .then(function () {
                 return TestManager.getTemplateSchedules(USER_ID);
             })
             .then(function (templateSchedules) {
                 var templateSchedule = templateSchedules[0];
-                //templateSchedule.days[0].shifts[0].roles.push(, , ROLE_2);
-                return TestManager.updateTemplateSchedule(USER_ID, SCHEDULE_STUB_BLANK_SHIFTS, templateSchedule);
+                templateSchedule.days[0].shifts[0].roles.push(roleDiffers, clownRole, missingId);
+                return TestManager.updateTemplateSchedule(USER_ID, TEMPLATE_SCHEDULE_ID, templateSchedule);
+            })
+            .then(function(){
+                expect.fail("should reject");
             })
             .catch(function(errObj){
-                expect(errObj).message('Invalid roles on shift'); //more specific error message
+                expect(errObj.message).to.equal(('Invalid roles')); //TODO(EG)more specific error message
                 expect(Object.keys(errObj).length).to.equal(1);
-                expect(errObj.missingProperty.length).to.equal({
-                    role: ROLE_2,
-                    missing: ['_id']
-                });
-                expect(errObj.invalidRole)
+                expect(errObj.invalidRoles.length).to.equal(3);
+                expect(errObj.invalidRoles).to.deep.have.members(invalidRoles);
             });
-    })
+    });
+
+    //TODO(EG) implement more
+    //it('should update a schedule by deleting one role and updating the other on a shift', function () {
+    //    expect.fail"not implemented");
+    //});
+
+
+
 });

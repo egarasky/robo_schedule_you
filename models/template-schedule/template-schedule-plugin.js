@@ -1,6 +1,7 @@
 (function () {
     var mongoose = require('mongoose');
     var Promise = require('bluebird');
+    var _ = require('underscore');
     var Day = require(projectPath('/models/template-schedule/template-day-schema'));
     const ObjectId = mongoose.Types.ObjectId;
     var TemplateScheduleSchema = new mongoose.Schema({
@@ -54,6 +55,10 @@
                 } else if (!manager) {
                     reject('No manager found with given id ' + managerId.toString());
                 }
+                var invalidRoles = validateScheduledTemplateRoles(schedule, manager);
+                if (invalidRoles) {
+                    reject(invalidRoles);
+                }
                 schedule._id = schedule._id ? new ObjectId(schedule._id) : new ObjectId();
                 manager.templateSchedules.push(schedule);
                 manager.markModified('templateSchedule');
@@ -71,7 +76,13 @@
     function updateTemplateSchedule(managerId, scheduleId, schedule) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            self.findOne({_id: managerId}, 'templateSchedules', function (err, manager) {
+            self.findOne({_id: managerId}, 'roles templateSchedules', function (err, manager) {
+                var templateSchedule = manager.templateSchedules.id(scheduleId);
+                var invalidRoles = validateScheduledTemplateRoles(schedule, manager);
+                if (invalidRoles) {
+                    reject(invalidRoles);
+                    return;
+                }
                 manager.templateSchedules.id(scheduleId).remove();
                 manager.templateSchedules.push(schedule);
                 manager.markModified('templateSchedules');
@@ -86,8 +97,55 @@
         });
     }
 
-//TODO(EG) validation make sure template schedule exists
-//TODO(EG) make sure order of days is unique and consecutive
+    function scheduledRoleMatchesOrganizationRole(role, organizationRoles, shiftId, dayId) {
+        var errObj = {};
+        errObj.role = role;
+        var jsonRoles = organizationRoles.map(function (role) {
+            return role.toJSON();
+        });
+        if (!role._id) {
+            errObj.reason = 'Missing _id property';
+            errObj.invalidProperties = ['_id'];
+            return errObj; //error object
+        }
+
+        var matchOrganizationRole = jsonRoles.find(function (orgRole) {
+            return orgRole._id === role._id.toString();
+        });
+
+        if (!matchOrganizationRole) {
+            errObj.reason = '_id does not match organization role';
+            return errObj; //error object
+        }
+
+
+        if (matchOrganizationRole.roleName !== role.roleName) {
+            errObj.reason = 'Organization role corresponding to _id differs from scheduled role';
+            return errObj;
+        }
+    }
+
+
+    function validateScheduledTemplateRoles(templateSchedule, manager) {
+        //var errObs = [];//TODO fix to match new
+        //var orgRoles = manager.roles;
+        //templateSchedule.days.forEach(function (day) {
+        //    _.each(day.shifts, function (shift) {
+        //        _.each(shift.roles, function (role) {
+        //            var errObj = scheduledRoleMatchesOrganizationRole(role, orgRoles, shift._id, day._id);
+        //            if (errObj) {
+        //                errObs.push(errObj);
+        //            }
+        //        });
+        //    });
+        //});
+        //if (errObs.length > 0) {
+        //    var error = new Error('Invalid roles');
+        //    error.invalidRoles = errObs;
+        //    return error;
+        //}
+    }
+
 
     module.exports = TemplateSchedulePlugin;
 })();

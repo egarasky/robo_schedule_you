@@ -4,12 +4,10 @@ var noDuplicates = require(projectPath('/models/utility-hooks/check-for-duplicat
 
 var RoleSchema = new mongoose.Schema({
     roleName: {type: String, required: true},
-    howManyNeeded: {type: Number}
 });//TODO more custom validation see schema docs and think of requirements
 RoleSchema.methods.toJSON = function () {
     return {
         roleName: this.roleName,
-        howManyNeeded: this.howManyNeeded,
         _id: this._id.toString()
     };
 };
@@ -54,7 +52,7 @@ function RolesPlugin(schema, options) {
     schema.statics.getRoles = getRoles;
 }
 
-function addRole(managerId, roleName, howManyNeeded) {
+function addRole(managerId, roleName) {
     var self = this;
     //validate roleName and howManyNeeded somehow
     return new Promise(function (resolve, reject) {
@@ -75,7 +73,6 @@ function addRole(managerId, roleName, howManyNeeded) {
             var roleId = new mongoose.Types.ObjectId();
             manager.roles.push({
                 roleName: roleName,
-                howManyNeeded: howManyNeeded,
                 _id: roleId
             });
             manager.markModified('roles');

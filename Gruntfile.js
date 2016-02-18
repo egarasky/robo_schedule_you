@@ -1,12 +1,17 @@
 module.exports = function (grunt) {
     grunt.initConfig({
         clean: {
-            test: ['test/*.js']
+            test: ['test/**/*', '!test/mocha.opts']
         },
         concurrent: {
-            target: ['nodemon', 'watch'],
-            options: {
-                logConcurrentOutput: true
+            app: {
+                target: ['nodemon', 'watch']
+            },
+            test: {
+                target: ['watch:buildTest', 'watch:runTest'],
+                options: {
+                    logConcurrentOutput: true
+                }
             }
         },
         concat: {
@@ -17,6 +22,15 @@ module.exports = function (grunt) {
             options: {
                 separator: '\n',
                 sourceMap: true
+            }
+        },
+        copy: {
+            test: {
+                expand: 'true',
+                flatten: true,
+                src: ['**/test/resources/**', '!test/**', '!node_modules/**'],
+                dest: 'test/resources/',
+                filter: 'isFile'
             }
         },
         watch: {
@@ -51,10 +65,19 @@ module.exports = function (grunt) {
                     livereload: true
                 }
             },
-            test: {
+            runTest: {
                 files: ['**/test/*.js', '!test/**'],
-                tasks: ['copy:test']
+                tasks: ['mocha-hack']
+            },
+            buildTest: {
+                files: ['**/*.js', '!webapp/**', '!node_modules/**', '!test/**'],
+                tasks: ['clean:test', 'concat:test']
+            },
+            ts: {
+                files: ['**/*.ts', '!node_modules/**', '!typings/**'],
+                tasks: ['ts']
             }
+
         },
         nodemon: {//https://github.com/ChrisWren/grunt-nodemon
             dev: {
@@ -88,7 +111,15 @@ module.exports = function (grunt) {
                 ui: 'bdd',
                 reporter: 'tap'
             },
-            all: {src: ['**/test/*.js', '!node_modules/**', '!webapp/**', '!test/**']}
+            //all: {src: ['**/test/*.js', '!node_modules/**', '!webapp/**', '!test/**']}
+            all: {src: ['test/test.js']}
+        },
+        ts: {
+            default: {
+                src: ["references.ts", "**/*.ts", "!node_modules/**", "!webapp/bower_components/**",
+                    "!typings/**", "typings/tsd.d.ts"],
+                reference: "references.ts"
+            }
         }
     });
 
@@ -122,6 +153,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-ts');
 
     grunt.registerTask('default-test', ['concat:test', 'set-test-globals']);
 
@@ -129,6 +161,6 @@ module.exports = function (grunt) {
     //grunt.registerTask('test', ['set-test-globals', 'mocha-hack']); old way with running mocha through grunt
     //new way uses mocha.opts file, grunt just watches and copies changed test files to the default mocha /test directory
     //and then run grunt tests through webstorm
-    grunt.registerTask('test', ['clean:test', 'concat:test', 'watch:test']);
+    grunt.registerTask('test', ['clean:test', 'concat:test', 'set-test-globals', 'mocha-hack', 'concurrent:test']);
     grunt.registerTask('debug', ['set-test-globals', 'nodemon']);
 };

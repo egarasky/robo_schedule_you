@@ -13,7 +13,7 @@ function getNoDuplicatesFn(documentArrayName, propertyName){
         }
         this[documentArrayName].forEach(function (doc) {
             if (seenProperties[doc[propertyName]]) {
-                if (duplicateProperties[doc[propertyName]]) {//if already defined then there are multiple duplicates
+                if (duplicateProperties[doc[propertyName]]) {//if already defined/truthy then there are 3+ duplicates of same roleName
                     duplicateProperties[doc[propertyName]].push(doc);
                 } else {
                     duplicateProperties[doc[propertyName]] = [doc, seenProperties[doc[propertyName]]];

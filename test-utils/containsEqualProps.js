@@ -29,7 +29,7 @@ function objectsContainEqualProps(a, b) {
     chai.config.truncateThreshold = 0;
     expect(a).to.deep.equal(bOnlyAProps);
 }
-chaiObjectEquality.containsEqualProps = function containsEqualProps(a, b) {
+chaiObjectEquality.containsEqualProps = function containsEqualProps(a, b, ignoreObjId) {
     expect(a).to.be.an.instanceof(Object);
     expect(b).to.be.an.instanceOf(Object);
     if (a instanceof Array && b instanceof Array) {
@@ -43,7 +43,6 @@ chaiObjectEquality.containsEqualProps = function containsEqualProps(a, b) {
         var message = a instanceof Array ? 'Array, Parameter 2 is Object' : 'Object, Parameter 2 is Array';
         expect(false).to.equal(true, 'Parameter 1 is ' + message);
     }
-
 };
 
 

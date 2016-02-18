@@ -1,17 +1,13 @@
 (function () {
     var shiftSchema = require('./template-shift-schema');
-    var timeSchema = require('./time-schema');
+    var timeSchema = require('./../schema-api/time-schema-fragment');
     var mongoose = require('mongoose');
     var daySchema = mongoose.Schema({
-        endTime: timeSchema,
-        startTime: timeSchema,
         shifts: [shiftSchema]
     });
 
     daySchema.methods.toJSON = function () {
         return {
-            startTime: [this.startTime[0], this.startTime[1]],
-            endTime: [this.endTime[0], this.endTime[1]],
             shifts: this.shifts.map(function (shift) {
                 return shift.toJSON();
             }),

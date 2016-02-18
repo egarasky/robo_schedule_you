@@ -1,0 +1,42 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "mocha/mocha.d.ts": {
+      "commit": "c2b4ebb74caeb379c3691646b04cb3db26b53f95"
+    },
+    "node/node.d.ts": {
+      "commit": "470954c4f427e0805a2d633636a7c6aa7170def8"
+    },
+    "serve-static/serve-static.d.ts": {
+      "commit": "c2b4ebb74caeb379c3691646b04cb3db26b53f95"
+    },
+    "mime/mime.d.ts": {
+      "commit": "c2b4ebb74caeb379c3691646b04cb3db26b53f95"
+    },
+    "express/express.d.ts": {
+      "commit": "c2b4ebb74caeb379c3691646b04cb3db26b53f95"
+    },
+    "moment/moment.d.ts": {
+      "commit": "c2b4ebb74caeb379c3691646b04cb3db26b53f95"
+    },
+    "moment/moment-node.d.ts": {
+      "commit": "c2b4ebb74caeb379c3691646b04cb3db26b53f95"
+    },
+    "bluebird/bluebird.d.ts": {
+      "commit": "bcd5761826eb567876c197ccc6a87c4d05731054"
+    },
+    "underscore/underscore.d.ts": {
+      "commit": "bcd5761826eb567876c197ccc6a87c4d05731054"
+    },
+    "redis/redis.d.ts": {
+      "commit": "9c2dd05cb4d773849de6f2a9de822e10f6229de8"
+    },
+    "bunyan/bunyan.d.ts": {
+      "commit": "470954c4f427e0805a2d633636a7c6aa7170def8"
+    }
+  }
+}
