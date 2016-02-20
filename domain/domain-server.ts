@@ -35,5 +35,4 @@ module domain {
         meta: 'meta'
     });
 
-    msgbus
 }

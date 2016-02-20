@@ -4,35 +4,22 @@ var domain;
     (function (schedule) {
         var template;
         (function (template) {
-            var TemplateSchedule = (function () {
-                function TemplateSchedule(_name, _days, _id) {
+            class TemplateSchedule {
+                constructor(_name, _days, _id) {
                     this._name = _name;
                     this._days = _days;
                     this._id = _id;
                 }
-                Object.defineProperty(TemplateSchedule.prototype, "name", {
-                    get: function () {
-                        return this._name;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(TemplateSchedule.prototype, "days", {
-                    get: function () {
-                        return this._days;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(TemplateSchedule.prototype, "id", {
-                    get: function () {
-                        return this._id;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                return TemplateSchedule;
-            })();
+                get name() {
+                    return this._name;
+                }
+                get days() {
+                    return this._days;
+                }
+                get id() {
+                    return this._id;
+                }
+            }
             template.TemplateSchedule = TemplateSchedule;
         })(template = schedule.template || (schedule.template = {}));
     })(schedule = domain.schedule || (domain.schedule = {}));

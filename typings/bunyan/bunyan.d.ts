@@ -10,36 +10,46 @@ declare module "bunyan" {
 
     class Logger extends EventEmitter {
         constructor(options:LoggerOptions);
+
         addStream(stream:Stream):void;
+
         addSerializers(serializers:Serializers):void;
+
         child(options:LoggerOptions, simple?:boolean):Logger;
         child(obj:Object, simple?:boolean):Logger;
+
         reopenFileStreams():void;
 
         level():string|number;
-        level(value: number | string):void;
-        levels(name: number | string, value: number | string):void;
+        level(value:number | string):void;
+
+        levels(name:number | string, value:number | string):void;
 
         trace(error:Error, format?:any, ...params:any[]):void;
         trace(buffer:Buffer, format?:any, ...params:any[]):void;
         trace(obj:Object, format?:any, ...params:any[]):void;
         trace(format:string, ...params:any[]):void;
+
         debug(error:Error, format?:any, ...params:any[]):void;
         debug(buffer:Buffer, format?:any, ...params:any[]):void;
         debug(obj:Object, format?:any, ...params:any[]):void;
         debug(format:string, ...params:any[]):void;
+
         info(error:Error, format?:any, ...params:any[]):void;
         info(buffer:Buffer, format?:any, ...params:any[]):void;
         info(obj:Object, format?:any, ...params:any[]):void;
         info(format:string, ...params:any[]):void;
+
         warn(error:Error, format?:any, ...params:any[]):void;
         warn(buffer:Buffer, format?:any, ...params:any[]):void;
         warn(obj:Object, format?:any, ...params:any[]):void;
         warn(format:string, ...params:any[]):void;
+
         error(error:Error, format?:any, ...params:any[]):void;
         error(buffer:Buffer, format?:any, ...params:any[]):void;
         error(obj:Object, format?:any, ...params:any[]):void;
         error(format:string, ...params:any[]):void;
+
         fatal(error:Error, format?:any, ...params:any[]):void;
         fatal(buffer:Buffer, format?:any, ...params:any[]):void;
         fatal(obj:Object, format?:any, ...params:any[]):void;
@@ -78,7 +88,7 @@ declare module "bunyan" {
     export var ERROR:number;
     export var FATAL:number;
 
-    export function resolveLevel(value: number | string):number;
+    export function resolveLevel(value:number | string):number;
 
     export function createLogger(options:LoggerOptions):Logger;
 
@@ -89,8 +99,11 @@ declare module "bunyan" {
         records:any[];
 
         write(record:any):void;
+
         end(record?:any):void;
+
         destroy():void;
+
         destroySoon():void;
     }
 

@@ -1,10 +1,8 @@
-//starting point of domain
 var domain;
 (function (domain_1) {
     var EnvDomainInit = domain_1.environments.dev.EnvDomainInit;
     var domain = require('cqrs-domain')(EnvDomainInit);
     var bunyan = require('bunyan');
-    //TODO type definitions for domain api
     domain.defineCommand({
         id: 'id',
         name: 'command',
@@ -12,7 +10,7 @@ var domain;
         aggregateName: 'payload.aggregate.name',
         payload: 'payload',
         revision: 'revision',
-        meta: 'meta' //every command should have userId and timestamp
+        meta: 'meta'
     });
     domain.defineEvent({
         correlationId: 'commandId',
@@ -24,6 +22,5 @@ var domain;
         payload: 'payload',
         meta: 'meta'
     });
-    msgbus;
 })(domain || (domain = {}));
-//# sourceMappingURL=server.js.map
+//# sourceMappingURL=domain-server.js.map

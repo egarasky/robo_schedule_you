@@ -118,7 +118,13 @@ module.exports = function (grunt) {
             default: {
                 src: ["references.ts", "**/*.ts", "!node_modules/**", "!webapp/bower_components/**",
                     "!typings/**", "typings/tsd.d.ts"],
-                reference: "references.ts"
+                reference: "references.ts",
+                options: {
+                    compile: false
+                }
+            },
+            options: {
+                module: 'commonjs'
             }
         }
     });

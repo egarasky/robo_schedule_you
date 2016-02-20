@@ -8,9 +8,9 @@ projectPath = function(path){
 };
 
 
-var userController = require('./end-points/user/main/user-controller.js');
+var userController = require('./host/end-points/user/main/user-controller.js');
 
-var BusinessRoutes = require('./end-points/business/main/business-routes.js');
+var BusinessRoutes = require('./host/end-points/business/main/business-routes.js');
 
 //nifty little function found from searching about problems with querying by ObjectId
 //http://stackoverflow.com/questions/7878557/cant-find-documents-searching-by-objectid-using-mongoose

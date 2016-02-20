@@ -4,35 +4,22 @@ var domain;
     (function (schedule) {
         var template;
         (function (template) {
-            var TemplateRole = (function () {
-                function TemplateRole(_id, _organizationRoleId, _howManyNeeded) {
+            class TemplateRole {
+                constructor(_id, _organizationRoleId, _howManyNeeded) {
                     this._id = _id;
                     this._organizationRoleId = _organizationRoleId;
                     this._howManyNeeded = _howManyNeeded;
                 }
-                Object.defineProperty(TemplateRole.prototype, "howManyNeeded", {
-                    get: function () {
-                        return this._howManyNeeded;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(TemplateRole.prototype, "organizationRoleId", {
-                    get: function () {
-                        return this._organizationRoleId;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(TemplateRole.prototype, "id", {
-                    get: function () {
-                        return this._id;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                return TemplateRole;
-            })();
+                get howManyNeeded() {
+                    return this._howManyNeeded;
+                }
+                get organizationRoleId() {
+                    return this._organizationRoleId;
+                }
+                get id() {
+                    return this._id;
+                }
+            }
             template.TemplateRole = TemplateRole;
         })(template = schedule.template || (schedule.template = {}));
     })(schedule = domain.schedule || (domain.schedule = {}));

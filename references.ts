@@ -1,4 +1,6 @@
 //grunt-start
+/// <reference path="domain/domain-message-bus.ts" />
+/// <reference path="domain/domain-server.ts" />
 /// <reference path="domain/domain.d.ts" />
 /// <reference path="domain/env/dev.ts" />
 /// <reference path="domain/env/env.d.ts" />
@@ -18,7 +20,8 @@
 /// <reference path="domain/lib/schedule/work/work-schedule.ts" />
 /// <reference path="domain/lib/schedule/work/work-shift.ts" />
 /// <reference path="domain/lib/schedule/work/work.d.ts" />
-/// <reference path="domain/server.ts" />
+/// <reference path="host/host-message-bus.ts" />
+/// <reference path="host/host-server.ts" />
 /// <reference path="models/work-schedule/typescript-test.ts" />
 /// <reference path="msgbus.ts" />
 /// <reference path="repos/organization/organization-mongoose-data-source.ts" />
