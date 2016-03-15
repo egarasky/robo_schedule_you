@@ -1,35 +1,46 @@
 var employee_1 = require("../employee/employee");
-var employee_2 = require("../employee/employee");
 var EmployeeContainer = (function () {
     function EmployeeContainer() {
         this.employeeMap = {};
+        this.employeeNameChecker = {};
     }
     EmployeeContainer.prototype.addEmployee = function (employeeToAdd) {
-        var employeeValue = this.employeeMap[employee_1.EmployeeKey.createKey(employeeToAdd)];
-        if (employeeValue) {
-            if (employeeValue.id === employeeToAdd.id) {
-                throw new Error('employee has already been added to organization'); //TODO handle with logger, give more information
-            }
-            else {
-                throw new Error('employee with same first name and last name already exists');
-            }
+        var matchingIdEmployee = this.employeeMap[employeeToAdd.id];
+        var nameKey = this.nameKey(employeeToAdd);
+        if (matchingIdEmployee) {
+            throw new Error('employee with same id has already been added to organization'); //TODO handle with logger, give more information
         }
-        this.employeeMap[employee_1.EmployeeKey.createKey(employeeToAdd)] = employeeToAdd;
+        else if (this.employeeNameChecker[nameKey]) {
+            throw new Error('employee with same name is already a part of the organization');
+        }
+        this.employeeMap[employeeToAdd.id] = employeeToAdd;
+        this.employeeNameChecker[this.nameKey(employeeToAdd)] = employeeToAdd.lastName + employeeToAdd.firstName;
     };
+    EmployeeContainer.prototype.nameKey = function (employeeToAdd) {
+        return employeeToAdd.lastName + employeeToAdd.firstName;
+    };
+    ;
     EmployeeContainer.prototype.getEmployees = function () {
         var _this = this;
         return Object.keys(this.employeeMap).map(function (employeeKey) {
-            return employee_2.Employee.employee(_this.employeeMap[employeeKey]);
+            return employee_1.Employee.employee(_this.employeeMap[employeeKey]);
         });
     };
-    EmployeeContainer.prototype.getEmployee = function (employeeKey) {
-        return this.employeeMap[employeeKey.getKey()];
+    EmployeeContainer.prototype.getEmployee = function (employeeId) {
+        return this.employeeMap[employeeId];
     };
     EmployeeContainer.prototype.addEmployees = function (_employees) {
         var _this = this;
         _employees.forEach(function (_employee) {
             _this.addEmployee(_employee);
         });
+    };
+    EmployeeContainer.prototype.removeEmployee = function (id) {
+        //TODO throw error if employee doesn't exist
+        var employeeToDelete = this.employeeMap[id];
+        delete this.employeeNameChecker[this.nameKey(employeeToDelete)];
+        delete this.employeeMap[id];
+        return employeeToDelete;
     };
     return EmployeeContainer;
 })();

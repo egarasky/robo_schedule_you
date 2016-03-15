@@ -4,6 +4,7 @@ import {IRole} from "domain.api";
 import {IEmployee} from "domain.employee";
 import {IWorkSchedule} from "domain.schedule.work";
 import {ITemplateSchedule} from "domain.schedule.template";
+import {IEmployeeProperties} from "domain.employee";
 var _:UnderscoreStatic = require('underscore');
 export class Organization implements IOrganization {
     private employeeContainer:EmployeeContainer = new EmployeeContainer();
@@ -73,6 +74,10 @@ export class Organization implements IOrganization {
         return this.employeeContainer.getEmployees();
     }
 
+    public employee(employeeId:string):IEmployee {
+        return this.employeeContainer.getEmployee(employeeId)
+    }
+
     static organization(organizationObj:IOrganization):Organization {
         return new Organization(
             organizationObj.id,
@@ -83,7 +88,11 @@ export class Organization implements IOrganization {
         );
     }
 
-    addEmployee(employee:IEmployee):void {
+    addEmployee(employee:IEmployeeProperties):void {
         this.employeeContainer.addEmployee(employee);
+    }
+
+    removeEmployee(id:string):void {
+        this.employeeContainer.removeEmployee(id);
     }
 }

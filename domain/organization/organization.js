@@ -75,11 +75,17 @@ var Organization = (function () {
         enumerable: true,
         configurable: true
     });
+    Organization.prototype.employee = function (employeeId) {
+        return this.employeeContainer.getEmployee(employeeId);
+    };
     Organization.organization = function (organizationObj) {
         return new Organization(organizationObj.id, organizationObj.roles, organizationObj.workSchedules, organizationObj.templateSchedules, organizationObj.employees);
     };
     Organization.prototype.addEmployee = function (employee) {
         this.employeeContainer.addEmployee(employee);
+    };
+    Organization.prototype.removeEmployee = function (id) {
+        this.employeeContainer.removeEmployee(id);
     };
     return Organization;
 })();
