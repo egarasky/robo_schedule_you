@@ -75,7 +75,7 @@ module.exports = function (grunt) {
             },
             ts: {
                 files: ['**/*.ts', '!node_modules/**', '!typings/**'],
-                tasks: ['ts']
+                tasks: ['ts:references']
             }
 
         },
@@ -115,13 +115,20 @@ module.exports = function (grunt) {
             all: {src: ['test/test.js']}
         },
         ts: {
-            default: {
+            references: {
                 src: ["references.ts", "**/*.ts", "!node_modules/**", "!webapp/bower_components/**",
-                    "!typings/**", "typings/tsd.d.ts"],
+                    "typings/**", "typings/tsd.d.ts"],
                 reference: "references.ts",
                 options: {
                     compile: false
                 }
+            },
+            //domain: {
+            //    src: ["domain/**/*.ts", "!domain/**/test/*"],
+            //    out: "domain/app.js"
+            //},
+            testDomain: {
+
             },
             options: {
                 module: 'commonjs'

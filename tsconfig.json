@@ -4,7 +4,7 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "target": "es6"
+    "target": "es5"
   },
   "files": [
     "references.ts"

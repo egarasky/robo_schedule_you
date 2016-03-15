@@ -16,18 +16,15 @@ module host.msgbus {
         name: 'hostCommandLogger',
         level: 'info',
         stream: 'hmmm',//TODO figure out,
-        streams: 'what',
-        serializers: 'huh',
-        src: 'dunno but don\'t think I want'
+        streams: 'what'
+        //serializers: 'huh', don't need serializers for now, can pass functions to return json objects of javascript objects
+         //src: if true tells line and file logged from -- should not have on generally -- performance issue
     };
-
     var hostViewLoggerInit = {
         name: 'hostViewLogger',
         level: 'info',
         stream: 'hmmm',//TODO figure out,
-        streams: 'what',
-        serializers: 'huh',
-        src: 'dunno but don\'t think I want'
+        streams: 'what'
     };
 
     var hostCommandLogger:Logger = bunyan.createLogger(hostCommandLoggerInit);
@@ -58,7 +55,7 @@ module host.msgbus {
             viewSubscriptions.push(callback);
         }
 
-        public static get lastCommand(){
+        public static get lastCommand() {
             return lastCommand;
         }
 

@@ -1,0 +1,89 @@
+import {IOrganization} from "domain.organization";
+import {EmployeeContainer} from './employee-container';
+import {IRole} from "domain.api";
+import {IEmployee} from "domain.employee";
+import {IWorkSchedule} from "domain.schedule.work";
+import {ITemplateSchedule} from "domain.schedule.template";
+var _:UnderscoreStatic = require('underscore');
+export class Organization implements IOrganization {
+    private employeeContainer:EmployeeContainer = new EmployeeContainer();
+
+    constructor(private _id:string,
+                private _roles:Array<IRole>,
+                private _workSchedules:Array<IWorkSchedule>,
+                private _templateSchedules:Array<ITemplateSchedule>,
+                _employees:Array<IEmployee>) {
+        this.employeeContainer.addEmployees(_employees)
+    }
+
+    createWorkScheduleFromTemplateSchedule(templateScheduleId:string,
+                                           startDay:number, startDate:moment.Moment,
+                                           endDate:moment.Moment):IWorkSchedule {
+        return undefined;
+    }
+
+
+    //    function Organization() {
+    //}
+    //
+    //    Organization.prototype.createWorkScheduleFromTemplateSchedule = createWorkScheduleFromTemplateSchedule;
+    //
+    //    function createWorkScheduleFromTemplateSchedule(templateScheduleId,
+    //                                                    startDay, startDate, endDate) {
+    //    //TODO error handling of bad arguments
+    //    var templateSchedule = _.find(this.templateSchedules, function (templateSchedule) {
+    //        return templateScheduleId === templateSchedule._id;
+    //    });
+    //    var workSchedule = {};
+    //
+    //    var currentMoment = moment(startDate);
+    //    currentMoment.day(currentMoment.day() + startDay);
+    //    var endMoment = moment(endDate);//
+    //    var dayIndex = startDay;
+    //    while (currentMoment.dayOfYear() !== endMoment.dayOfYear()
+    //    && currentMoment.year() !== endMoment.year()) {
+    //        var day = createWorkDayFromTemplateDay(templateSchedule[dayIndex], currentMoment);
+    //    }
+    //}
+    //
+    //    function createWorkDayFromTemplateDay(templateDay, currentMoment){
+    //    var workDay = {};
+    //    workDay.date = currentMoment;
+    //    workDay.shifts = _.extendOwn(templateDay.shifts);
+    //}
+
+    get id():string {
+        return this._id;
+    }
+
+    get roles():Array<IRole> {
+        return this._roles;
+    }
+
+
+    get workSchedules():Array<IWorkSchedule> {
+        return this._workSchedules;
+    }
+
+    get templateSchedules():Array<ITemplateSchedule> {
+        return this._templateSchedules;
+    }
+
+    get employees():Array<IEmployee> {
+        return this.employeeContainer.getEmployees();
+    }
+
+    static organization(organizationObj:IOrganization):Organization {
+        return new Organization(
+            organizationObj.id,
+            organizationObj.roles,
+            organizationObj.workSchedules,
+            organizationObj.templateSchedules,
+            organizationObj.employees
+        );
+    }
+
+    addEmployee(employee:IEmployee):void {
+        this.employeeContainer.addEmployee(employee);
+    }
+}
