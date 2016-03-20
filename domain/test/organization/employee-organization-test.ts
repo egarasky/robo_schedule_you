@@ -10,11 +10,10 @@ import {LINDA_BELCHER} from "../stubs/employees-stub";
 import {IEmployeeProperties} from "domain.employee";
 import {LOUISE_BELCHER} from "../stubs/employees-stub";
 
-describe('domain organization tests', function () {
+describe('domain employee functionality for organization tests', function () {
     var expect:ExpectStatic = require('chai').expect;
     var _:UnderscoreStatic = require('underscore');
     var bobsBurgersOrg:Organization;
-    var EMPLOYEES:Array<Employee>;
 
     beforeEach(function () {
         bobsBurgersOrg = Organization.organization(ORGANIZATION);
@@ -64,7 +63,9 @@ describe('domain organization tests', function () {
     });
 
     it('should try to remove an employee that the organization does not have', function () {
-        expect.fail("not implemented");
+        expect(() => {
+            bobsBurgersOrg.removeEmployee(BOB_BELCHER.id);
+        }).to.throw(Error, /employee to remove is not currently part of organization/);
     });
 
 })

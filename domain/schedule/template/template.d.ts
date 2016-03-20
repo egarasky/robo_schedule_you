@@ -1,9 +1,13 @@
 declare module "domain.schedule.template" {
     import {ITime} from "domain.api";
-    export interface ITemplateSchedule {
+    export interface ITemplateScheduleProperties {
         name: string,
         days: Array<ITemplateDay>,
         id: string
+    }
+
+    export interface ITemplateSchedule extends ITemplateScheduleProperties {
+
     }
 
     export interface ITemplateDay {
@@ -16,6 +20,7 @@ declare module "domain.schedule.template" {
         startTime: ITime,
         endTime: ITime
         roles: Array<ITemplateRole>
+        name: string
     }
 
     export interface ITemplateRole {

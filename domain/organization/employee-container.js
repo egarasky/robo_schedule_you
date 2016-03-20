@@ -38,6 +38,9 @@ var EmployeeContainer = (function () {
     EmployeeContainer.prototype.removeEmployee = function (id) {
         //TODO throw error if employee doesn't exist
         var employeeToDelete = this.employeeMap[id];
+        if (!employeeToDelete) {
+            throw new Error('employee to remove is not currently part of organization');
+        }
         delete this.employeeNameChecker[this.nameKey(employeeToDelete)];
         delete this.employeeMap[id];
         return employeeToDelete;

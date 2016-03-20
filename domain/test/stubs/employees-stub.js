@@ -1,12 +1,25 @@
+exports.COOK_ROLE = {
+    id: "R1",
+    name: "cook"
+};
+exports.HOST_ROLE = {
+    id: "R3",
+    name: "host"
+};
+exports.WAITER_ROLE = {
+    id: "R2",
+    name: "waiter"
+};
+exports.DISH_WASHER_ROLE = {
+    id: "R4",
+    name: "dish washer"
+};
 exports.BOB_BELCHER = {
     id: "E1",
     firstName: "Bob",
     lastName: "Belcher",
     roles: [
-        {
-            id: "R1",
-            name: "cook"
-        }
+        exports.COOK_ROLE
     ]
 };
 exports.LINDA_BELCHER = {
@@ -14,14 +27,8 @@ exports.LINDA_BELCHER = {
     firstName: "Linda",
     lastName: "Belcher",
     roles: [
-        {
-            id: "R1",
-            name: "cook"
-        },
-        {
-            id: "R3",
-            name: "host"
-        }
+        exports.COOK_ROLE,
+        exports.HOST_ROLE
     ]
 };
 exports.LOUISE_BELCHER = {
@@ -29,18 +36,9 @@ exports.LOUISE_BELCHER = {
     firstName: "Louise",
     lastName: "Belcher",
     roles: [
-        {
-            id: "R2",
-            name: "waiter"
-        },
-        {
-            id: "R4",
-            name: "dish washer"
-        },
-        {
-            id: "R3",
-            name: "host"
-        }
+        exports.WAITER_ROLE,
+        exports.DISH_WASHER_ROLE,
+        exports.HOST_ROLE
     ]
 };
 exports.GENE_BELCHER = {
@@ -48,18 +46,9 @@ exports.GENE_BELCHER = {
     firstName: "Gene",
     lastName: "Belcher",
     roles: [
-        {
-            id: "R2",
-            name: "waiter"
-        },
-        {
-            id: "R4",
-            name: "dish washer"
-        },
-        {
-            id: "R3",
-            name: "host"
-        }
+        exports.WAITER_ROLE,
+        exports.DISH_WASHER_ROLE,
+        exports.HOST_ROLE
     ]
 };
 var TINA_BELCHER = {
@@ -67,18 +56,9 @@ var TINA_BELCHER = {
     firstName: "Tina",
     lastName: "Belcher",
     roles: [
-        {
-            id: "R1",
-            name: "cook"
-        },
-        {
-            id: "R2",
-            name: "waiter"
-        },
-        {
-            id: "R4",
-            name: "dish washer"
-        }
+        exports.COOK_ROLE,
+        exports.WAITER_ROLE,
+        exports.DISH_WASHER_ROLE
     ]
 };
 exports.employees = [

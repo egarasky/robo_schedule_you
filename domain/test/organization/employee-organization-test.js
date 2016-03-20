@@ -3,11 +3,10 @@ var organization_1 = require("../../organization/organization");
 var employees_stub_1 = require("../stubs/employees-stub");
 var employee_1 = require("../../employee/employee");
 var employees_stub_2 = require("../stubs/employees-stub");
-describe('domain organization tests', function () {
+describe('domain employee functionality for organization tests', function () {
     var expect = require('chai').expect;
     var _ = require('underscore');
     var bobsBurgersOrg;
-    var EMPLOYEES;
     beforeEach(function () {
         bobsBurgersOrg = organization_1.Organization.organization(organization_stub_1.ORGANIZATION);
     });
@@ -47,7 +46,9 @@ describe('domain organization tests', function () {
         }).to.throw(Error, /employee with same name is already a part of the organization/);
     });
     it('should try to remove an employee that the organization does not have', function () {
-        expect.fail("not implemented");
+        expect(function () {
+            bobsBurgersOrg.removeEmployee(employees_stub_1.BOB_BELCHER.id);
+        }).to.throw(Error, /employee to remove is not currently part of organization/);
     });
 });
-//# sourceMappingURL=organization-test.js.map
+//# sourceMappingURL=employee-organization-test.js.map
