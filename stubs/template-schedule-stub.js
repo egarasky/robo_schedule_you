@@ -1,15 +1,13 @@
-import {ITemplateScheduleProperties} from "domain.schedule.template"
-import {ITemplateShift} from "domain.schedule.template";
-import {COOK_ROLE} from "./employees-stub";
-import {WAITER_ROLE} from "./employees-stub";
-import {HOST_ROLE} from "./employees-stub";
-export const BLANK_TEMPLATE_SCHEDULE:ITemplateScheduleProperties = {
+"use strict";
+var employees_stub_1 = require("./employees-stub");
+var employees_stub_2 = require("./employees-stub");
+var employees_stub_3 = require("./employees-stub");
+exports.BLANK_TEMPLATE_SCHEDULE = {
     name: 'blank template schedule',
     days: [],
     id: 'TS1'
 };
-
-export const WEEK_DAY_BREAKFAST_SHIFT:ITemplateShift = {
+exports.WEEK_DAY_BREAKFAST_SHIFT = {
     id: 'TShift1',
     name: 'Week Day Breakfast',
     startTime: {
@@ -23,23 +21,22 @@ export const WEEK_DAY_BREAKFAST_SHIFT:ITemplateShift = {
     roles: [
         {
             id: 'TR1',
-            organizationRoleId: COOK_ROLE.id,
+            organizationRoleId: employees_stub_1.COOK_ROLE.id,
             howManyNeeded: 1
         },
         {
             id: 'TR2',
-            organizationRoleId: WAITER_ROLE.id,
+            organizationRoleId: employees_stub_2.WAITER_ROLE.id,
             howManyNeeded: 2
         },
         {
             id: 'TR3',
-            organizationRoleId: HOST_ROLE.id,
+            organizationRoleId: employees_stub_3.HOST_ROLE.id,
             howManyNeeded: 1
         }
     ]
 };
-
-export const WEEKEND_BREAKFAST_SHIFT:ITemplateShift = {
+exports.WEEKEND_BREAKFAST_SHIFT = {
     id: 'TShift2',
     name: 'Weekend Breakfast',
     startTime: {
@@ -53,24 +50,23 @@ export const WEEKEND_BREAKFAST_SHIFT:ITemplateShift = {
     roles: [
         {
             id: 'TR4',
-            organizationRoleId: COOK_ROLE.id,
+            organizationRoleId: employees_stub_1.COOK_ROLE.id,
             howManyNeeded: 2
         },
         {
             id: 'TR5',
-            organizationRoleId: WAITER_ROLE.id,
+            organizationRoleId: employees_stub_2.WAITER_ROLE.id,
             howManyNeeded: 3
         },
     ]
 };
-
-export const WEEK_TEMPLATE_SCHEDULE:ITemplateScheduleProperties = {
+exports.WEEK_TEMPLATE_SCHEDULE = {
     id: 'TS2',
     name: 'week schedule with breakfast',
     days: [
         {
             id: 'TD1TS2',
-            shifts: [WEEK_DAY_BREAKFAST_SHIFT]
+            shifts: [exports.WEEK_DAY_BREAKFAST_SHIFT]
         }]
 };
-
+//# sourceMappingURL=template-schedule-stub.js.map

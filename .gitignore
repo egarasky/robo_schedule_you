@@ -13,6 +13,8 @@ node_modules
 bower_components
 **/bower_components
 
+#intellij transpiled typescript
+compiled
 *.idea
 *.iml
 **/*.iml

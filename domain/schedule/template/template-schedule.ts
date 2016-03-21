@@ -1,6 +1,7 @@
 import {ITemplateDay} from "domain.schedule.template";
 import {ITemplateScheduleProperties} from "domain.schedule.template";
-export class TemplateSchedule implements ITemplateScheduleProperties {
+import {ITemplateSchedule} from "domain.schedule.template";
+export class TemplateSchedule implements ITemplateSchedule {
 
     constructor(private _name:string,
                 private _days:Array<ITemplateDay>,
@@ -17,5 +18,13 @@ export class TemplateSchedule implements ITemplateScheduleProperties {
 
     get id():string {
         return this._id;
+    }
+
+    static templateSchedule(templateScheduleProps:ITemplateScheduleProperties):ITemplateSchedule {
+        return new TemplateSchedule(
+            templateScheduleProps.name,
+            templateScheduleProps.days,
+            templateScheduleProps.id
+        );
     }
 }

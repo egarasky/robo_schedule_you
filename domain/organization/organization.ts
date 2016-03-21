@@ -5,9 +5,12 @@ import {IEmployee} from "domain.employee";
 import {IWorkSchedule} from "domain.schedule.work";
 import {ITemplateSchedule} from "domain.schedule.template";
 import {IEmployeeProperties} from "domain.employee";
+import {ITemplateScheduleProperties} from "domain.schedule.template";
+import {TemplateScheduleContainer} from "./template-schedule-container";
 var _:UnderscoreStatic = require('underscore');
 export class Organization implements IOrganization {
     private employeeContainer:EmployeeContainer = new EmployeeContainer();
+    private templateScheduleContainer:TemplateScheduleContainer = new TemplateScheduleContainer();
 
     constructor(private _id:string,
                 private _roles:Array<IRole>,
@@ -94,5 +97,26 @@ export class Organization implements IOrganization {
 
     removeEmployee(id:string):void {
         this.employeeContainer.removeEmployee(id);
+    }
+
+    addTemplateSchedule(templateSchedule:ITemplateScheduleProperties):void {
+        this.templateScheduleContainer.addTemplateSchedule(templateSchedule);
+    }
+
+    getTemplateSchedules():Array<ITemplateSchedule> {
+        return this.templateScheduleContainer.getTemplateSchedules();
+    }
+
+    getTemplateSchedule(id:string):ITemplateSchedule {
+        return this.templateScheduleContainer.getTemplateSchedule(id);
+    }
+
+    updateTemplateSchedule(updatedTemplateSchedule:ITemplateScheduleProperties) {
+        this.templateScheduleContainer.updateTemplateSchedule(updatedTemplateSchedule);
+    }
+
+
+    removeTemplateSchedule(id:string):void {
+        this.templateScheduleContainer.removeTemplateSchedule(id);
     }
 }

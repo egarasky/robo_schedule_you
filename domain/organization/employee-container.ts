@@ -39,7 +39,6 @@ export class EmployeeContainer {
     }
 
     removeEmployee(id:string):IEmployeeProperties {
-        //TODO throw error if employee doesn't exist
         var employeeToDelete = this.employeeMap[id];
         if(!employeeToDelete) {
             throw new Error('employee to remove is not currently part of organization');
