@@ -24,9 +24,13 @@ declare module "domain.schedule.work" {
         roles: Array<IWorkRole>
     }
 
-    export interface IWorkSchedule {
+    export interface IWorkScheduleProperties {
         id: string,
         days: Array<IWorkDay>,
         madeFromTemplateScheduleId: string
+    }
+
+    export interface IWorkSchedule {
+
     }
 }

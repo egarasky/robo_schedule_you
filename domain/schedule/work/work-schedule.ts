@@ -1,6 +1,6 @@
-import {IWorkSchedule} from "domain.schedule.work";
+import {IWorkScheduleProperties} from "domain.schedule.work";
 import {IWorkDay} from "domain.schedule.work";
-export class WorkSchedule implements IWorkSchedule {
+export class WorkSchedule implements IWorkScheduleProperties {
     constructor(private _id:string,
                 private _days:Array<IWorkDay>,
                 private _madeFromTemplateScheduleId:string) {

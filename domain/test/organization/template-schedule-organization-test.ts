@@ -44,7 +44,6 @@ describe('domain template schedule', function(){
         expect(bobsBurgersOrg.getTemplateSchedules().length).to.equal(0);
     });
 
-
     //TODO validation tests
 
 });
