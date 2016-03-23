@@ -1,17 +1,37 @@
 import {ProcessArgsMap} from "../../../utilities/ProcessArgsMap";
-import {WORK_SCHEDULE_IDS} from "../../test/stubs/work-schedule-stub";
 export class WorkScheduleIdFactory {
-    private static idsGiven = 0;
+    private static scheduleIdsGiven = 0;
+    private static shiftIdsGiven = 0;
+    private static dayIdsGiven = 0;
+
     constructor(){
         throw new Error('dont instantiate WorkScheduleIdFactory');
     }
 
-    public static getId():string{
-        WorkScheduleIdFactory.idsGiven++;
+    public static getScheduleId():string {
+        WorkScheduleIdFactory.scheduleIdsGiven++;
         if(ProcessArgsMap.get('workScheduleId')){
             //TODO configure getting workScheduleIds
         }
         
-        return 'WS' + WorkScheduleIdFactory.idsGiven;
+        return 'WS' + WorkScheduleIdFactory.scheduleIdsGiven;
+    };
+
+    public static getShiftId():string {
+        WorkScheduleIdFactory.shiftIdsGiven++;
+        if(ProcessArgsMap.get('workShiftId')){
+            //TODO build configuration
+        }
+
+        return 'WSHFT' + WorkScheduleIdFactory.shiftIdsGiven;
+    }
+
+    public static getDayId():string {
+        WorkScheduleIdFactory.dayIdsGiven++;
+        if(ProcessArgsMap.get('workDayId')){
+            //TODO build configuration
+        }
+
+        return 'WDAY' + WorkScheduleIdFactory.dayIdsGiven;
     }
 }

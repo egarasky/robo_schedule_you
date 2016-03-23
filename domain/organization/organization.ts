@@ -2,7 +2,7 @@ import {IOrganization} from "domain.organization";
 import {EmployeeContainer} from './employee-container';
 import {IRole} from "domain.api";
 import {IEmployee} from "domain.employee";
-import {IWorkSchedulePropertiesw} from "domain.schedule.work";
+import {IWorkScheduleProperties} from "domain.schedule.work";
 import {ITemplateSchedule} from "domain.schedule.template";
 import {IEmployeeProperties} from "domain.employee";
 import {ITemplateScheduleProperties} from "domain.schedule.template";
@@ -14,7 +14,7 @@ export class Organization implements IOrganization {
 
     constructor(private _id:string,
                 private _roles:Array<IRole>,
-                private _workSchedules:Array<IWorkSchedulePropertiesw>,
+                private _workSchedules:Array<IWorkScheduleProperties>,
                 private _templateSchedules:Array<ITemplateSchedule>,
                 _employees:Array<IEmployee>) {
         this.employeeContainer.addEmployees(_employees)
@@ -22,7 +22,7 @@ export class Organization implements IOrganization {
 
     createWorkScheduleFromTemplateSchedule(templateScheduleId:string,
                                            startDay:number, startDate:moment.Moment,
-                                           endDate:moment.Moment):IWorkSchedulePropertiesw {
+                                           endDate:moment.Moment):IWorkScheduleProperties {
         return undefined;
     }
 
@@ -65,7 +65,7 @@ export class Organization implements IOrganization {
     }
 
 
-    get workSchedules():Array<IWorkSchedulePropertiesw> {
+    get workSchedules():Array<IWorkScheduleProperties> {
         return this._workSchedules;
     }
 

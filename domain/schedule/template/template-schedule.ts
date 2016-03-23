@@ -34,18 +34,19 @@ export class TemplateSchedule implements ITemplateSchedule {
         );
     }
 
-    //TODO implement
-    // public createWorkSchedule(startDate:Moment, endDate:Moment):IWorkScheduleProperties {
-    //     //TODO validate date range
-    //     var daysApart = startDate.diff(endDate, 'day');
-    //
-    //     if(daysApart < 0){
-    //         throw new Error('start date is after end date');
-    //     }
-    //
-    //     var workDays:Array<IWorkDay> = [];
-    //     for(var i=0;i<daysApart;i++){
-    //         workDays.push(new WorkDay(WorkScheduleIdFactory.getId(), startDate.add(i, 'day')))
-    //     }
-    // }
+   // TODO implement
+    public createWorkSchedule(startDate:Moment, endDate:Moment):IWorkScheduleProperties {
+        //TODO validate date range
+        var daysApart = startDate.diff(endDate, 'day');
+
+        if(daysApart < 0){
+            throw new Error('start date is after end date');
+        }
+
+        var workDays:Array<IWorkDay> = [];
+        for(var i=0;i<daysApart;i++){
+            workDays.push(new WorkDay(WorkScheduleIdFactory.getScheduleId(), startDate.add(i, 'day'), this.days[i].shifts));
+        }
+        return null;
+    }
 }

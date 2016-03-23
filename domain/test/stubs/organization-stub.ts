@@ -1,7 +1,7 @@
 import {IOrganization} from "domain.organization";
 import {IEmployee} from "domain.employee";
 import {ITemplateSchedule} from "domain.schedule.template";
-import {IWorkSchedulePropertiesw} from "domain.schedule.work";
+import {IWorkScheduleProperties} from "domain.schedule.work";
 const ROLE_COOK = {
     id: "R1",
     name: "cook"

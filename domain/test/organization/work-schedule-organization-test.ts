@@ -10,8 +10,8 @@ describe('domain work schedule', function () {
         const startDate = moment('2016-02-01', "YYYY MM DD");
         const endDateShorter = moment('2016-02-03', "YYYY MM DD");
         const endDateMatchesLastDay = moment('2016-02-07');
-        TemplateSchedule.templateSchedule(WEEK_TEMPLATE_SCHEDULE).createWorkSchedule(startDate, endDateShorter);
-        TemplateSchedule.templateSchedule(WEEK_TEMPLATE_SCHEDULE).createWorkSchedule(startDate, endDateMatchesLastDay);
+        // TemplateSchedule.templateSchedule(WEEK_TEMPLATE_SCHEDULE).createWorkSchedule(startDate, endDateShorter);
+        // TemplateSchedule.templateSchedule(WEEK_TEMPLATE_SCHEDULE).createWorkSchedule(startDate, endDateMatchesLastDay);
     });
 
     it('should add a work schedule created from the blank template schedule', function () {
