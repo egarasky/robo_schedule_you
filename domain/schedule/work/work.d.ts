@@ -12,9 +12,11 @@ declare module "domain.schedule.work" {
         shifts: Array<IWorkShift>
     }
 
-    export interface IWorkRole extends ITemplateRole {
+    export interface IWorkRole {
         id: string,
-        employees: Array<IEmployee>
+        employees: Array<IEmployee>,
+        howManyNeeded: number,
+        organizationRoleId:string
     }
 
     export interface IWorkShift {

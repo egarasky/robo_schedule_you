@@ -1,5 +1,7 @@
 declare module "domain.schedule.template" {
     import {ITime} from "domain.api";
+    import {IWorkScheduleProperties} from "domain.schedule.work";
+    import Moment = moment.Moment;
     export interface ITemplateScheduleProperties {
         name: string,
         days: Array<ITemplateDay>,
@@ -7,7 +9,7 @@ declare module "domain.schedule.template" {
     }
 
     export interface ITemplateSchedule extends ITemplateScheduleProperties {
-
+        createWorkSchedule(startDate:Moment, endDate:Moment):IWorkScheduleProperties
     }
 
     export interface ITemplateDay {

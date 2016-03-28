@@ -3,6 +3,7 @@ export class WorkScheduleIdFactory {
     private static scheduleIdsGiven = 0;
     private static shiftIdsGiven = 0;
     private static dayIdsGiven = 0;
+    private static roleIdsGiven = 0;
 
     constructor(){
         throw new Error('dont instantiate WorkScheduleIdFactory');
@@ -33,5 +34,14 @@ export class WorkScheduleIdFactory {
         }
 
         return 'WDAY' + WorkScheduleIdFactory.dayIdsGiven;
+    }
+
+    public static getRoleId():string {
+        WorkScheduleIdFactory.roleIdsGiven++;
+        if(ProcessArgsMap.get('workRoleId')){
+            //TODO build configuration
+        }
+
+        return 'WROLE' + WorkScheduleIdFactory.roleIdsGiven;
     }
 }

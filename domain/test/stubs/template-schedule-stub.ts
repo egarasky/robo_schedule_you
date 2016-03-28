@@ -3,6 +3,9 @@ import {ITemplateShift} from "domain.schedule.template";
 import {COOK_ROLE} from "./employees-stub";
 import {WAITER_ROLE} from "./employees-stub";
 import {HOST_ROLE} from "./employees-stub";
+
+
+
 export const BLANK_TEMPLATE_SCHEDULE:ITemplateScheduleProperties = {
     name: 'blank template schedule',
     days: [],

@@ -1,11 +1,12 @@
 import {ITemplateDay} from "domain.schedule.template";
 import {ITemplateScheduleProperties} from "domain.schedule.template";
-import {ITemplateSchedule} from "domain.schedule.template";
 import {IWorkScheduleProperties} from "domain.schedule.work";
 import Moment = moment.Moment;
 import {IWorkDay} from "domain.schedule.work";
 import {WorkDay} from "../work/work-day";
 import {WorkScheduleIdFactory} from "../work/work-schedule-id-factory";
+import {ITemplateSchedule} from "domain.schedule.template";
+import {WorkSchedule} from "../work/work-schedule";
 
 export class TemplateSchedule implements ITemplateSchedule {
 
@@ -34,19 +35,20 @@ export class TemplateSchedule implements ITemplateSchedule {
         );
     }
 
-   // TODO implement
+    // TODO implement
     public createWorkSchedule(startDate:Moment, endDate:Moment):IWorkScheduleProperties {
         //TODO validate date range
         var daysApart = startDate.diff(endDate, 'day');
 
-        if(daysApart < 0){
+        if (daysApart > 0) {
             throw new Error('start date is after end date');
         }
 
         var workDays:Array<IWorkDay> = [];
-        for(var i=0;i<daysApart;i++){
-            workDays.push(new WorkDay(WorkScheduleIdFactory.getScheduleId(), startDate.add(i, 'day'), this.days[i].shifts));
+        for (var i = 0; i < daysApart; i++) {
+            workDays.push(new WorkDay(WorkScheduleIdFactory.getDayId(), startDate.add(i, 'day'), this.days[i].shifts));
         }
-        return null;
+
+        return new WorkSchedule(WorkScheduleIdFactory.getScheduleId(), workDays, this.id);
     }
 }
