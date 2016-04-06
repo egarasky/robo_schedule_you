@@ -20,7 +20,7 @@ export const SHORT_WORK_SCHEDULE_END_DATE = moment('2016-02-03', 'YYYY MM DD');
 export const SHORT_WORK_SCHEDULE:IWorkScheduleProperties = {
     id: WORK_SCHEDULE_ID_1,
     days: [],
-    madeFromTemplateScheduleId: 'TS1',
+    madeFromTemplateScheduleId: 'TS2',
 };
 
 export const WEEK_WORK_SCHEDULE_START_DATE = SHORT_WORK_SCHEDULE_START_DATE;
@@ -28,5 +28,5 @@ export const WEEK_WORK_SCHEDULE_END_DATE = moment('2016-02-07', 'YYYY MM DD');
 export const WEEK_WORK_SCHEDULE:IWorkScheduleProperties = {
     id: WORK_SCHEDULE_ID_2,
     days: [],
-    madeFromTemplateScheduleId: 'TS1'
+    madeFromTemplateScheduleId: 'TS2'
 };

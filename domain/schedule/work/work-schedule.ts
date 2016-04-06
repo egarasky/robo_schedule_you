@@ -17,4 +17,12 @@ export class WorkSchedule implements IWorkScheduleProperties {
     get madeFromTemplateScheduleId():string {
         return this._madeFromTemplateScheduleId;
     }
+
+    public toPlainObject():IWorkScheduleProperties{
+        return {
+            id: this.id,
+            days: this.days,
+            madeFromTemplateScheduleId: this.madeFromTemplateScheduleId
+        }
+    }
 }
