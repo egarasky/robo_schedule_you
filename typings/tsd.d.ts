@@ -10,3 +10,4 @@
 /// <reference path="underscore/underscore.d.ts" />
 /// <reference path="redis/redis.d.ts" />
 /// <reference path="bunyan/bunyan.d.ts" />
+/// <reference path="sprintf-js/sprintf-js.d.ts" />

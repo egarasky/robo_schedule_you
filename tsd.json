@@ -37,6 +37,9 @@
     },
     "bunyan/bunyan.d.ts": {
       "commit": "470954c4f427e0805a2d633636a7c6aa7170def8"
+    },
+    "sprintf-js/sprintf-js.d.ts": {
+      "commit": "08ed4e9f1869e37e29514d862e0158b40e550232"
     }
   }
 }
