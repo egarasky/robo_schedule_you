@@ -1,20 +1,14 @@
-import {IEmployee} from "domain.employee";
-import {IOrganization} from "domain.organization";
-import EMPLOYEE_STUB = require('../stubs/employees-stub');
-import {ORGANIZATION} from "../stubs/organization-stub";
-import {Organization} from "../../organization/organization";
-import {BOB_BELCHER} from "../stubs/employees-stub";
-import {Employee} from "../../employee/employee";
 import ExpectStatic = Chai.ExpectStatic;
-import {LINDA_BELCHER} from "../stubs/employees-stub";
-import {IEmployeeProperties} from "domain.employee";
-import {LOUISE_BELCHER} from "../stubs/employees-stub";
+import {Organization} from "../../organization/organization";
+import {ORGANIZATION} from "../stubs/organization-stub";
+import {BOB_BELCHER, LINDA_BELCHER} from "../stubs/employees-stub";
+import {Employee} from "../../employee/employee";
+import {IEmployeeProperties} from "../../employee/employee_interfaces";
 
 describe('domain employee functionality for organization tests', function () {
     var expect:ExpectStatic = require('chai').expect;
     var _:UnderscoreStatic = require('underscore');
     var bobsBurgersOrg:Organization;
-
     beforeEach(function () {
         bobsBurgersOrg = Organization.organization(ORGANIZATION);
     });
@@ -35,8 +29,8 @@ describe('domain employee functionality for organization tests', function () {
         });
         expect(bobsBurgersOrg.employees).deep.include.members(addedEmployees);
 
-        expect(bobsBurgersOrg.employee(BOB_BELCHER.id)).to.deep.equal(BOB_BELCHER);
-        expect(bobsBurgersOrg.employee(LINDA_BELCHER.id)).to.deep.equal(LINDA_BELCHER);
+        expect(bobsBurgersOrg.employee(BOB_BELCHER.id)).to.deep.equal(Employee.employee(BOB_BELCHER));
+        expect(bobsBurgersOrg.employee(LINDA_BELCHER.id)).to.deep.equal(Employee.employee(LINDA_BELCHER));
     });
 
     it('should add two employees and remove one', function () {

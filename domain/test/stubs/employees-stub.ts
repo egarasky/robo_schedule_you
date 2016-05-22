@@ -1,5 +1,4 @@
-import {IEmployeeProperties} from "domain.employee";
-
+import {IEmployeeProperties} from "../../employee/employee_interfaces";
 
 export const COOK_ROLE = {
     id: "R1",

@@ -1,18 +1,19 @@
-import {IOrganization} from "domain.organization";
-import {EmployeeContainer} from './employee-container';
-import {IRole} from "domain.api";
-import {IEmployee} from "domain.employee";
-import {IWorkScheduleProperties} from "domain.schedule.work";
-import {ITemplateSchedule} from "domain.schedule.template";
-import {IEmployeeProperties} from "domain.employee";
-import {ITemplateScheduleProperties} from "domain.schedule.template";
+import {IOrganization, IOrganizationProperties} from "./organization_interfaces";
+import {EmployeeContainer} from "./employee-container";
 import {TemplateScheduleContainer} from "./template-schedule-container";
+import {WorkScheduleContainer} from "./work-schedule-container";
+import {IRole} from "../api/api_interfaces";
+import {IWorkScheduleProperties} from "../schedule/work/work_schedule_interfaces";
+import {ITemplateSchedule, ITemplateScheduleProperties} from "../schedule/template/template_schedule_interfaces";
+import {IEmployee, IEmployeeProperties} from "../employee/employee_interfaces";
 var _:UnderscoreStatic = require('underscore');
 export class Organization implements IOrganization {
     private employeeContainer:EmployeeContainer = new EmployeeContainer();
     private templateScheduleContainer:TemplateScheduleContainer = new TemplateScheduleContainer();
+    private workScheduleContainer:WorkScheduleContainer = new WorkScheduleContainer();
 
     constructor(private _id:string,
+                private _name:string,
                 private _roles:Array<IRole>,
                 private _workSchedules:Array<IWorkScheduleProperties>,
                 private _templateSchedules:Array<ITemplateSchedule>,
@@ -21,9 +22,14 @@ export class Organization implements IOrganization {
     }
 
     createWorkScheduleFromTemplateSchedule(templateScheduleId:string,
-                                           startDay:number, startDate:moment.Moment,
-                                           endDate:moment.Moment):IWorkScheduleProperties {
-        return undefined;
+                                           startDate:moment.Moment,
+                                           endDate:moment.Moment, dayOfSchedule?:number):IWorkScheduleProperties {
+
+        var templateSchedule = this.templateScheduleContainer.getTemplateSchedule(templateScheduleId);
+        var workSchedule:IWorkScheduleProperties = templateSchedule.createWorkSchedule(startDate, endDate);
+        this.workScheduleContainer.addWorkSchedule(workSchedule);
+        return workSchedule;
+
     }
 
 
@@ -60,6 +66,11 @@ export class Organization implements IOrganization {
         return this._id;
     }
 
+
+    get name():string {
+        return this._name;
+    }
+
     get roles():Array<IRole> {
         return this._roles;
     }
@@ -81,9 +92,10 @@ export class Organization implements IOrganization {
         return this.employeeContainer.getEmployee(employeeId)
     }
 
-    static organization(organizationObj:IOrganization):Organization {
+    static organization(organizationObj:IOrganizationProperties):Organization {
         return new Organization(
             organizationObj.id,
+            organizationObj.name,
             organizationObj.roles,
             organizationObj.workSchedules,
             organizationObj.templateSchedules,
@@ -118,5 +130,17 @@ export class Organization implements IOrganization {
 
     removeTemplateSchedule(id:string):void {
         this.templateScheduleContainer.removeTemplateSchedule(id);
+    }
+
+    getWorkSchedules():Array<IWorkScheduleProperties> {
+        return this.workScheduleContainer.getWorkSchedules();
+    }
+
+    getWorkSchedule(workScheduleId:string):IWorkScheduleProperties {
+        return this.workScheduleContainer.getWorkSchedule(workScheduleId);
+    }
+
+    updateWorkSchedule(workSchedule:IWorkScheduleProperties):void {
+        this.workScheduleContainer.updateWorkSchedule(workSchedule);
     }
 }

@@ -1,7 +1,5 @@
-import {IOrganization} from "domain.organization";
-import {IEmployee} from "domain.employee";
-import {ITemplateSchedule} from "domain.schedule.template";
-import {IWorkScheduleProperties} from "domain.schedule.work";
+import {IOrganizationProperties} from "../../organization/organization_interfaces";
+
 const ROLE_COOK = {
     id: "R1",
     name: "cook"
@@ -18,8 +16,9 @@ const ROLE_DISH_WASHER = {
     id: "R4",
     name: "dish washer"
 };
-export const ORGANIZATION:IOrganization = {
+export const ORGANIZATION:IOrganizationProperties = {
     id: "O1",
+    name: "Bob's Burgers",
     employees: [],
     roles: [ROLE_COOK, ROLE_WAITER, ROLE_HOST, ROLE_DISH_WASHER],
     templateSchedules: [],

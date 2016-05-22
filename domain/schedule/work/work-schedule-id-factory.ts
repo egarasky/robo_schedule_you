@@ -1,6 +1,7 @@
 import {ProcessArgsMap} from "../../../utilities/ProcessArgsMap";
 export class WorkScheduleIdFactory {
-    private static scheduleIdsGiven = 0;
+    private static idStart = 0;
+    private static scheduleIdsGiven = WorkScheduleIdFactory.idStart;
     private static shiftIdsGiven = 0;
     private static dayIdsGiven = 0;
     private static roleIdsGiven = 0;
@@ -43,5 +44,12 @@ export class WorkScheduleIdFactory {
         }
 
         return 'WROLE' + WorkScheduleIdFactory.roleIdsGiven;
+    }
+
+    public static reset():void {
+        WorkScheduleIdFactory.dayIdsGiven = WorkScheduleIdFactory.idStart;
+        WorkScheduleIdFactory.roleIdsGiven = WorkScheduleIdFactory.idStart;
+        WorkScheduleIdFactory.shiftIdsGiven = WorkScheduleIdFactory.idStart;
+        WorkScheduleIdFactory.scheduleIdsGiven = WorkScheduleIdFactory.idStart;
     }
 }

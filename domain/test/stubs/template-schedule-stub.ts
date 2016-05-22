@@ -1,10 +1,7 @@
-import {ITemplateScheduleProperties} from "domain.schedule.template"
-import {ITemplateShift} from "domain.schedule.template";
 import {COOK_ROLE} from "./employees-stub";
 import {WAITER_ROLE} from "./employees-stub";
 import {HOST_ROLE} from "./employees-stub";
-
-
+import {ITemplateScheduleProperties, ITemplateShift} from "../../schedule/template/template_schedule_interfaces";
 
 export const BLANK_TEMPLATE_SCHEDULE:ITemplateScheduleProperties = {
     name: 'blank template schedule',
@@ -13,7 +10,7 @@ export const BLANK_TEMPLATE_SCHEDULE:ITemplateScheduleProperties = {
 };
 
 export const WEEK_DAY_BREAKFAST_SHIFT:ITemplateShift = {
-    id: 'TShift1',
+    id: 'TS1',
     name: 'Week Day Breakfast',
     startTime: {
         hour: 6,
@@ -72,8 +69,11 @@ export const WEEK_TEMPLATE_SCHEDULE:ITemplateScheduleProperties = {
     name: 'week schedule with breakfast',
     days: [
         {
-            id: 'TD1TS2',
+            id: 'TD1',
             shifts: [WEEK_DAY_BREAKFAST_SHIFT]
+        },{
+            id: 'TD2',
+            shifts: []
         }]
 };
 

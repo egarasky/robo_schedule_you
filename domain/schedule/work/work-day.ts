@@ -1,11 +1,8 @@
-import {IWorkDay} from "domain.schedule.work";
-import {IWorkShift} from "domain.schedule.work";
-import {ITemplateShift} from "domain.schedule.template";
-import {WorkShift} from "./work-shift";
-import {WorkScheduleIdFactory} from "./work-schedule-id-factory";
-import {IWorkRole} from "domain.schedule.work";
-import {ITemplateRole} from "domain.schedule.template";
+import {IWorkDay, IWorkShift, IWorkRole} from "./work_schedule_interfaces";
+import {ITemplateShift, ITemplateRole} from "../template/template_schedule_interfaces";
 import {WorkRole} from "./work-role";
+import {WorkScheduleIdFactory} from "./work-schedule-id-factory";
+import {WorkShift} from "./work-shift";
 export class WorkDay implements IWorkDay {
     private _shifts:Array<IWorkShift>;
 

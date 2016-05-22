@@ -1,14 +1,13 @@
-import {ITemplateDay} from "domain.schedule.template";
-import {ITemplateScheduleProperties} from "domain.schedule.template";
-import {IWorkScheduleProperties} from "domain.schedule.work";
-import Moment = moment.Moment;
-import {IWorkDay} from "domain.schedule.work";
-import {WorkDay} from "../work/work-day";
+import {ITemplateSchedule, ITemplateDay, ITemplateScheduleProperties} from "./template_schedule_interfaces";
+import {IWorkScheduleProperties, IWorkDay, IWorkShift, IWorkDayProperties} from "../work/work_schedule_interfaces";
 import {WorkScheduleIdFactory} from "../work/work-schedule-id-factory";
-import {ITemplateSchedule} from "domain.schedule.template";
-import {WorkSchedule} from "../work/work-schedule";
-import {IWorkShift} from "domain.schedule.work";
-var _:UnderscoreStatic = require('underscore');
+import moment = require('moment');
+export const DATES_INVALID_MESSAGE = 'Start date: % is after end date: %';
+export const DATES_GIVEN_EXCEED_SCHEDULE_DAYS = 'Date range from %s to %s exceeds number of days of template schedule: %s';
+import _ = require('underscore');
+import {DATE_FORMAT} from "../../api/api_interfaces";
+import Moment = moment.Moment;
+
 export class TemplateSchedule implements ITemplateSchedule {
 
     constructor(private _name:string,
@@ -37,19 +36,22 @@ export class TemplateSchedule implements ITemplateSchedule {
     }
 
     // TODO implement
-    public createWorkSchedule(startDate:Moment, endDate:Moment):IWorkScheduleProperties {
+    public createWorkSchedule(startDate:Moment, endDate:Moment, dayOfSchedule:number):IWorkScheduleProperties {
         //TODO validate date range
-        var daysApart = startDate.diff(endDate, 'day');
-
-        if (daysApart > 0) {
-            throw new Error('start date is after end date');
+        var daysApart = endDate.diff(startDate, 'day');
+        if (daysApart < 0) {//start date after end date
+            throw new Error(sprintf(DATES_INVALID_MESSAGE, startDate, endDate));
         }
 
-        var workDays:Array<IWorkDay> = [];
-        for (var i = 0; i < daysApart; i++) {
+        if (daysApart + 1 > this.days.length){//number of days for generated schedule
+            throw new Error(sprintf(DATES_GIVEN_EXCEED_SCHEDULE_DAYS, startDate.toString(), endDate.toString(), this.days.length))
+        }
+        //TODO implement starting at a certain day of the schedule
+        var workDays:Array<IWorkDayProperties> = [];
+        for (var i = 0; i  < daysApart; i++) {
             workDays.push({
                 id: WorkScheduleIdFactory.getDayId(),
-                date: startDate.add(i, 'day'),
+                date: startDate.clone().add(i, 'day'),
                 shifts: _.map(this.days[i].shifts, (templateShift):IWorkShift => {
                     return {
                         id: WorkScheduleIdFactory.getShiftId(),

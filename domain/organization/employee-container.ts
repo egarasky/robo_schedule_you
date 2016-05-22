@@ -1,7 +1,6 @@
-import {IEmployeeProperties} from "domain.employee";
-import {EmployeeKey} from "../employee/employee";
-import {IEmployee} from "domain.employee";
+import {IEmployeeProperties, IEmployee} from "../employee/employee_interfaces";
 import {Employee} from "../employee/employee";
+
 export class EmployeeContainer {
     private employeeMap:{[index: string]: IEmployeeProperties} = {};
     private employeeNameChecker:{[index:string]: string} = {};
@@ -29,7 +28,7 @@ export class EmployeeContainer {
     }
 
     public getEmployee(employeeId:string):IEmployee {
-        return this.employeeMap[employeeId];
+        return new Employee(this.employeeMap[employeeId]);
     }
 
     addEmployees(_employees:Array<IEmployeeProperties>):void {

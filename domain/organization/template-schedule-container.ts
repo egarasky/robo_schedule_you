@@ -1,6 +1,5 @@
-import {ITemplateScheduleProperties} from "domain.schedule.template";
-import {ITemplateSchedule} from "domain.schedule.template";
-import {TemplateSchedule} from "../schedule/template/template-schedule";
+import {TemplateSchedule} from '../schedule/template/template-schedule';
+import {ITemplateScheduleProperties, ITemplateSchedule} from "../schedule/template/template_schedule_interfaces";
 export class TemplateScheduleContainer {
     private templateScheduleMap:{[index:string]: ITemplateScheduleProperties} = {};
     private templateScheduleNameChecker:{[index:string]: string} = {};

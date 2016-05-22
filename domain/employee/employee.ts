@@ -1,6 +1,7 @@
-import {IEmployee} from "domain.employee";
-import {IEmployeeProperties} from "domain.employee";
-import {IRole} from "domain.api";
+import {IEmployeeProperties, IEmployee} from "./employee_interfaces";
+import {IRole} from "../api/api_interfaces";
+import _ = require('underscore');
+
 export class Employee implements IEmployee {
     private _id:string;
     private _firstName:string;
@@ -8,14 +9,22 @@ export class Employee implements IEmployee {
     private _roles:Array<IRole>;
 
 
-    constructor(id:string,
-                firstName:string,
-                lastName:string,
-                role:Array<IRole>) {
-        this._id = id;
-        this._firstName = firstName;
-        this._lastName = lastName;
-        this._roles = role;
+    constructor(idOrEmployeeObject:string | IEmployeeProperties,
+                firstName?:string,
+                lastName?:string,
+                role?:Array<IRole>) {
+        if (_.isString(idOrEmployeeObject)) {
+            this._id = <string> idOrEmployeeObject;
+            this._firstName = firstName;
+            this._lastName = lastName;
+            this._roles = role;
+        } else {
+            let employeeObj:IEmployeeProperties = <IEmployeeProperties> idOrEmployeeObject;
+            this._id = employeeObj.id;
+            this._firstName = employeeObj.firstName;
+            this._lastName = employeeObj.lastName;
+            this._roles = employeeObj.roles;
+        }
     }
 
     public static employee(employeeObj:IEmployeeProperties):IEmployee {
@@ -37,6 +46,7 @@ export class Employee implements IEmployee {
     get roles():Array<IRole> {
         return this._roles;
     }
+
 }
 
 export class EmployeeKey {
@@ -55,3 +65,4 @@ export class EmployeeKey {
     }
 
 }
+

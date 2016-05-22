@@ -1,5 +1,4 @@
-import {ITemplateDay} from "domain.schedule.template";
-import {ITemplateShift} from "domain.schedule.template";
+import {ITemplateDay, ITemplateShift} from "./template_schedule_interfaces";
 export class TemplateDay implements ITemplateDay {
 
     constructor(private _shifts:Array<ITemplateShift>,

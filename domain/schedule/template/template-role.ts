@@ -1,4 +1,4 @@
-import {ITemplateRole} from "domain.schedule.template";
+import {ITemplateRole} from "./template_schedule_interfaces";
 export class TemplateRole implements ITemplateRole {
 
     constructor(private _id:string,

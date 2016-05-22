@@ -1,6 +1,5 @@
-import {ITemplateShift} from "domain.schedule.template";
-import {ITemplateRole} from "domain.schedule.template";
-import {ITime} from "domain.api";
+import {ITemplateShift, ITemplateRole} from "./template_schedule_interfaces";
+import {ITime} from "../../api/api_interfaces";
 export class TemplateShift implements ITemplateShift {
     constructor(private _startTime:ITime,
                 private _endTime:ITime,

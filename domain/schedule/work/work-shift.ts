@@ -1,6 +1,5 @@
-import {ITime} from "domain.api";
-import {IWorkShift} from "domain.schedule.work";
-import {IWorkRole} from "domain.schedule.work";
+import {IWorkShift, IWorkRole} from "./work_schedule_interfaces";
+import {ITime} from "../../api/api_interfaces";
 export class WorkShift implements IWorkShift {
 
     constructor(private _id:string,

@@ -1,5 +1,5 @@
-import {IWorkRole} from "domain.schedule.work";
-import {IEmployee} from "domain.employee";
+import {IWorkRole} from "./work_schedule_interfaces";
+import {IEmployee} from "../../employee/employee_interfaces";
 export class WorkRole implements IWorkRole {
     constructor(private _employees:Array<IEmployee>,
                 private _id:string,
